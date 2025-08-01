@@ -248,20 +248,21 @@ class AuditLogger:
         """
         try:
             # Import here to avoid circular imports
-            from backend.models.database import audit_log_repository
-            
-            audit_log_repository.create_log(
-                event_type=event.event_type.value,
-                outcome=event.outcome,
-                user_id=event.user_id,
-                session_id=event.session_id,
-                ip_address=event.ip_address,
-                user_agent=event.user_agent,
-                resource=event.resource,
-                action=event.action,
-                risk_level=event.risk_level,
-                details=event.details
-            )
+            import backend.models.database as db_module
+            if hasattr(db_module, 'audit_log_repository'):
+                audit_log_repository = db_module.audit_log_repository
+                audit_log_repository.create_log(
+                    event_type=event.event_type.value,
+                    outcome=event.outcome,
+                    user_id=event.user_id,
+                    session_id=event.session_id,
+                    ip_address=event.ip_address,
+                    user_agent=event.user_agent,
+                    resource=event.resource,
+                    action=event.action,
+                    risk_level=event.risk_level,
+                    details=event.details
+                )
         except Exception as e:
             # Don't let database errors break audit logging
             self.app_logger.error(f"Failed to persist audit log to database: {e}")
