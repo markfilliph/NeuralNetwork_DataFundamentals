@@ -10,6 +10,7 @@ from backend.core.exceptions import SecurityError
 from backend.services.auth_service import AuthenticationError, AuthenticationService
 from backend.models.database import user_repository, session_repository
 from backend.core.logging import audit_logger, EventType
+from backend.services.cache_service import cache_service
 
 
 class Permission(Enum):
@@ -336,7 +337,7 @@ class DatabaseRBACService:
         return permission in user_permissions
     
     def get_user_permissions(self, user: User) -> Set[Permission]:
-        """Get all permissions for a user.
+        """Get all permissions for a user with caching.
         
         Args:
             user: User object
@@ -347,7 +348,45 @@ class DatabaseRBACService:
         if not user.is_active:
             return set()
         
-        return self.ROLE_PERMISSIONS.get(user.role, set())
+        # Try to get from cache first
+        cache_key = f"user_permissions:{user.user_id}:{user.role.value}"
+        cached_permissions = cache_service.get(cache_key)
+        
+        if cached_permissions is not None:
+            # Convert back to Permission enum set
+            return {Permission(perm) for perm in cached_permissions}
+        
+        # Get permissions from role mapping
+        permissions = self.ROLE_PERMISSIONS.get(user.role, set())
+        
+        # Cache the permissions (convert enum values to strings for JSON serialization)
+        permission_strings = [perm.value for perm in permissions]
+        cache_service.set(cache_key, permission_strings, ttl=1800)  # 30 minutes
+        
+        return permissions
+    
+    def invalidate_user_cache(self, user_id: str) -> bool:
+        """Invalidate cached data for a user.
+        
+        Args:
+            user_id: User identifier
+            
+        Returns:
+            True if cache was invalidated
+        """
+        success = True
+        
+        # Invalidate permissions cache for all roles (we don't know current role)
+        for role in Role:
+            cache_key = f"user_permissions:{user_id}:{role.value}"
+            if not cache_service.delete(cache_key):
+                success = False
+        
+        # Invalidate session cache
+        if not cache_service.invalidate_user_session(user_id):
+            success = False
+        
+        return success
     
     def can_access_resource(self, user: User, resource_type: str, action: str) -> bool:
         """Check if user can access a specific resource.

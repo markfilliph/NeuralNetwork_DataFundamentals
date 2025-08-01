@@ -1,14 +1,13 @@
 """Authentication service for JWT-based authentication."""
 
 import os
-import hashlib
 import hmac
-import json
-import base64
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
 from functools import wraps
 
+from jose import JWTError, jwt
+from passlib.context import CryptContext
 from backend.core.config import settings
 from backend.core.exceptions import SecurityError
 
@@ -35,9 +34,12 @@ class AuthenticationService:
     ALGORITHM = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES = settings.API_KEY_EXPIRE_MINUTES
     
+    # Initialize password context with bcrypt
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    
     @classmethod
     def create_access_token(cls, data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
-        """Create a JWT access token.
+        """Create a JWT access token using jose library.
         
         Args:
             data: Payload data to encode in token
@@ -53,13 +55,13 @@ class AuthenticationService:
         else:
             expire = datetime.utcnow() + timedelta(minutes=cls.ACCESS_TOKEN_EXPIRE_MINUTES)
         
-        to_encode.update({"exp": expire.timestamp(), "iat": datetime.utcnow().timestamp()})
+        to_encode.update({"exp": expire, "iat": datetime.utcnow()})
         
-        return cls._encode_jwt(to_encode)
+        return jwt.encode(to_encode, cls.SECRET_KEY, algorithm=cls.ALGORITHM)
     
     @classmethod
     def verify_token(cls, token: str) -> Dict[str, Any]:
-        """Verify and decode a JWT token.
+        """Verify and decode a JWT token using jose library.
         
         Args:
             token: JWT token string
@@ -72,136 +74,46 @@ class AuthenticationService:
             TokenExpiredError: If token is expired
         """
         try:
-            payload = cls._decode_jwt(token)
-            
-            # Check expiration
-            if payload.get("exp", 0) < datetime.utcnow().timestamp():
-                raise TokenExpiredError("Token has expired")
-            
+            payload = jwt.decode(token, cls.SECRET_KEY, algorithms=[cls.ALGORITHM])
             return payload
             
-        except json.JSONDecodeError:
-            raise InvalidTokenError("Invalid token format")
+        except JWTError as e:
+            if "expired" in str(e).lower():
+                raise TokenExpiredError("Token has expired")
+            else:
+                raise InvalidTokenError(f"Token verification failed: {e}")
         except Exception as e:
             raise InvalidTokenError(f"Token verification failed: {e}")
     
-    @classmethod
-    def _encode_jwt(cls, payload: Dict[str, Any]) -> str:
-        """Encode JWT token (simplified implementation).
-        
-        Args:
-            payload: Data to encode
-            
-        Returns:
-            JWT token string
-        """
-        # Create header
-        header = {"alg": cls.ALGORITHM, "typ": "JWT"}
-        
-        # Base64 encode header and payload
-        header_encoded = base64.urlsafe_b64encode(
-            json.dumps(header, separators=(',', ':')).encode()
-        ).decode().rstrip('=')
-        
-        payload_encoded = base64.urlsafe_b64encode(
-            json.dumps(payload, separators=(',', ':')).encode()
-        ).decode().rstrip('=')
-        
-        # Create signature
-        message = f"{header_encoded}.{payload_encoded}"
-        signature = hmac.new(
-            cls.SECRET_KEY.encode(),
-            message.encode(),
-            hashlib.sha256
-        ).digest()
-        
-        signature_encoded = base64.urlsafe_b64encode(signature).decode().rstrip('=')
-        
-        return f"{message}.{signature_encoded}"
     
     @classmethod
-    def _decode_jwt(cls, token: str) -> Dict[str, Any]:
-        """Decode JWT token (simplified implementation).
-        
-        Args:
-            token: JWT token string
-            
-        Returns:
-            Decoded payload
-            
-        Raises:
-            InvalidTokenError: If token is invalid
-        """
-        try:
-            parts = token.split('.')
-            if len(parts) != 3:
-                raise InvalidTokenError("Invalid token format")
-            
-            header_encoded, payload_encoded, signature_encoded = parts
-            
-            # Verify signature
-            message = f"{header_encoded}.{payload_encoded}"
-            expected_signature = hmac.new(
-                cls.SECRET_KEY.encode(),
-                message.encode(),
-                hashlib.sha256
-            ).digest()
-            
-            # Add padding if needed
-            signature_encoded += '=' * (4 - len(signature_encoded) % 4)
-            provided_signature = base64.urlsafe_b64decode(signature_encoded)
-            
-            if not hmac.compare_digest(expected_signature, provided_signature):
-                raise InvalidTokenError("Invalid token signature")
-            
-            # Decode payload
-            payload_encoded += '=' * (4 - len(payload_encoded) % 4)
-            payload_bytes = base64.urlsafe_b64decode(payload_encoded)
-            payload = json.loads(payload_bytes.decode())
-            
-            return payload
-            
-        except Exception as e:
-            raise InvalidTokenError(f"Token decoding failed: {e}")
-    
-    @staticmethod
-    def hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
-        """Hash a password with salt.
+    def hash_password(cls, password: str, salt: Optional[str] = None) -> tuple[str, str]:
+        """Hash a password using bcrypt via passlib.
         
         Args:
             password: Plain text password
-            salt: Optional salt (generated if not provided)
+            salt: Optional salt (ignored - bcrypt handles salt internally)
             
         Returns:
-            Tuple of (hashed_password, salt)
+            Tuple of (hashed_password, salt) - salt is empty string for bcrypt
         """
-        if salt is None:
-            salt = os.urandom(32).hex()
-        
-        # Use PBKDF2 for password hashing
-        password_hash = hashlib.pbkdf2_hmac(
-            'sha256',
-            password.encode('utf-8'),
-            salt.encode('utf-8'),
-            100000  # iterations
-        )
-        
-        return password_hash.hex(), salt
+        # bcrypt handles salt internally, so we don't need to manage it
+        hashed = cls.pwd_context.hash(password)
+        return hashed, ""
     
-    @staticmethod
-    def verify_password(password: str, hashed_password: str, salt: str) -> bool:
-        """Verify a password against its hash.
+    @classmethod
+    def verify_password(cls, password: str, hashed_password: str, salt: str = "") -> bool:
+        """Verify a password against its bcrypt hash.
         
         Args:
             password: Plain text password
-            hashed_password: Stored hashed password
-            salt: Salt used for hashing
+            hashed_password: Stored bcrypt hashed password
+            salt: Salt (ignored for bcrypt compatibility)
             
         Returns:
             True if password matches, False otherwise
         """
-        computed_hash, _ = AuthenticationService.hash_password(password, salt)
-        return hmac.compare_digest(computed_hash, hashed_password)
+        return cls.pwd_context.verify(password, hashed_password)
     
     @staticmethod
     def generate_api_key() -> str:

@@ -31,11 +31,11 @@ class TestAuthenticationService:
         hash1, salt1 = self.auth_service.hash_password(password)
         hash2, salt2 = self.auth_service.hash_password(password)
         
-        # Different salts should produce different hashes
+        # bcrypt produces different hashes each time (salt is internal)
         assert hash1 != hash2
-        assert salt1 != salt2
-        assert len(hash1) == 64  # SHA256 hex length
-        assert len(salt1) == 64  # 32 bytes hex encoded
+        assert salt1 == salt2 == ""  # bcrypt doesn't return separate salt
+        assert hash1.startswith("$2b$")  # bcrypt hash format
+        assert hash2.startswith("$2b$")  # bcrypt hash format
     
     def test_hash_password_with_salt(self):
         """Test password hashing with provided salt."""
@@ -45,9 +45,11 @@ class TestAuthenticationService:
         hash1, returned_salt1 = self.auth_service.hash_password(password, salt)
         hash2, returned_salt2 = self.auth_service.hash_password(password, salt)
         
-        # Same salt should produce same hash
-        assert hash1 == hash2
-        assert returned_salt1 == returned_salt2 == salt
+        # bcrypt still produces different hashes (manages salt internally)
+        assert hash1 != hash2  # Different each time
+        assert returned_salt1 == returned_salt2 == ""  # Empty salt
+        assert hash1.startswith("$2b$")  # bcrypt format
+        assert hash2.startswith("$2b$")  # bcrypt format
     
     def test_verify_password_correct(self):
         """Test password verification with correct password."""
