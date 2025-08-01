@@ -9,6 +9,7 @@ from contextlib import contextmanager
 
 from backend.core.config import settings
 from backend.core.exceptions import SecurityError
+from backend.utils.cache_utils import cache_query, cache_user_data, CachedRepositoryMixin
 
 
 class DatabaseError(Exception):
@@ -121,10 +122,45 @@ class DatabaseManager:
                 )
             ''')
             
-            # Create indexes separately
+            # Create optimized indexes for better query performance
             conn.execute('CREATE INDEX IF NOT EXISTS idx_audit_timestamp ON audit_logs (timestamp)')
             conn.execute('CREATE INDEX IF NOT EXISTS idx_audit_user ON audit_logs (user_id)')
             conn.execute('CREATE INDEX IF NOT EXISTS idx_audit_event ON audit_logs (event_type)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_audit_outcome ON audit_logs (outcome)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_audit_risk ON audit_logs (risk_level)')
+            
+            # Composite indexes for common query patterns
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_audit_user_timestamp ON audit_logs (user_id, timestamp)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_audit_event_timestamp ON audit_logs (event_type, timestamp)')
+            
+            # User table indexes
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_users_email ON users (email)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_users_role ON users (role)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_users_active ON users (is_active)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_users_created ON users (created_at)')
+            
+            # Session table indexes
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_sessions_user ON user_sessions (user_id)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_sessions_expires ON user_sessions (expires_at)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_sessions_active ON user_sessions (is_active)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_sessions_user_active ON user_sessions (user_id, is_active)')
+            
+            # Dataset table indexes
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_datasets_owner ON datasets (owner_id)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_datasets_created ON datasets (created_at)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_datasets_hash ON datasets (file_hash)')
+            
+            # Model table indexes
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_models_dataset ON models (dataset_id)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_models_owner ON models (owner_id)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_models_type ON models (model_type)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_models_status ON models (status)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_models_created ON models (created_at)')
+            
+            # API keys table indexes
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_apikeys_user ON api_keys (user_id)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_apikeys_active ON api_keys (is_active)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_apikeys_expires ON api_keys (expires_at)')
             
             # API keys table
             conn.execute('''
@@ -146,11 +182,18 @@ class DatabaseManager:
     
     @contextmanager
     def get_connection(self):
-        """Get database connection with proper error handling."""
+        """Get database connection with proper error handling and optimizations."""
         conn = None
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = sqlite3.connect(self.db_path, timeout=30.0)
             conn.row_factory = sqlite3.Row  # Enable dict-like access
+            
+            # Performance optimizations
+            conn.execute('PRAGMA journal_mode=WAL')  # Better concurrency
+            conn.execute('PRAGMA synchronous=NORMAL')  # Balance safety and speed
+            conn.execute('PRAGMA cache_size=10000')  # Increase cache size
+            conn.execute('PRAGMA temp_store=MEMORY')  # Use memory for temp tables
+            
             yield conn
         except sqlite3.Error as e:
             if conn:
@@ -190,8 +233,8 @@ class DatabaseManager:
             return cursor.rowcount
 
 
-class UserRepository:
-    """Repository for user data operations."""
+class UserRepository(CachedRepositoryMixin):
+    """Repository for user data operations with caching support."""
     
     def __init__(self, db_manager: DatabaseManager):
         """Initialize user repository."""
@@ -232,8 +275,9 @@ class UserRepository:
         except Exception as e:
             raise DatabaseError(f"Failed to create user: {e}")
     
+    @cache_user_data(ttl=1800)  # Cache for 30 minutes
     def get_user(self, user_id: str) -> Optional[Dict]:
-        """Get user by ID.
+        """Get user by ID with optimized query and caching.
         
         Args:
             user_id: User identifier
@@ -241,8 +285,9 @@ class UserRepository:
         Returns:
             User dictionary or None if not found
         """
+        # Optimized query with LIMIT for single result
         results = self.db.execute_query(
-            'SELECT * FROM users WHERE user_id = ?',
+            'SELECT * FROM users WHERE user_id = ? LIMIT 1',
             (user_id,)
         )
         
@@ -253,8 +298,9 @@ class UserRepository:
         
         return None
     
+    @cache_query(ttl=1800, key_prefix="user_by_username")
     def get_user_by_username(self, username: str) -> Optional[Dict]:
-        """Get user by username.
+        """Get user by username with optimized query and caching.
         
         Args:
             username: Username
@@ -262,8 +308,9 @@ class UserRepository:
         Returns:
             User dictionary or None if not found
         """
+        # Optimized query with LIMIT for single result
         results = self.db.execute_query(
-            'SELECT * FROM users WHERE username = ?',
+            'SELECT * FROM users WHERE username = ? AND is_active = 1 LIMIT 1',
             (username,)
         )
         
@@ -301,25 +348,47 @@ class UserRepository:
         
         return affected > 0
     
-    def list_users(self, limit: int = 100, offset: int = 0) -> List[Dict]:
-        """List users with pagination.
+    @cache_query(ttl=300, key_prefix="user_list")  # Cache for 5 minutes
+    def list_users(self, limit: int = 100, offset: int = 0, active_only: bool = True) -> List[Dict]:
+        """List users with optimized pagination and caching.
         
         Args:
             limit: Maximum number of users to return
             offset: Number of users to skip
+            active_only: Only return active users
             
         Returns:
             List of user dictionaries
         """
+        where_clause = "WHERE is_active = 1" if active_only else ""
+        
+        # Only select needed columns for listing
         results = self.db.execute_query(
-            'SELECT * FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?',
+            f'''SELECT user_id, username, email, role, is_active, created_at, last_login 
+               FROM users {where_clause} 
+               ORDER BY created_at DESC 
+               LIMIT ? OFFSET ?''',
             (limit, offset)
         )
         
-        for user in results:
-            user['metadata'] = json.loads(user['metadata'] or '{}')
-        
         return results
+    
+    def get_users_count(self, active_only: bool = True) -> int:
+        """Get total count of users for pagination.
+        
+        Args:
+            active_only: Only count active users
+            
+        Returns:
+            Total number of users
+        """
+        where_clause = "WHERE is_active = 1" if active_only else ""
+        
+        results = self.db.execute_query(
+            f'SELECT COUNT(*) as count FROM users {where_clause}'
+        )
+        
+        return results[0]['count'] if results else 0
     
     def deactivate_user(self, user_id: str) -> bool:
         """Deactivate a user.
@@ -371,16 +440,21 @@ class SessionRepository:
         return affected > 0
     
     def get_session(self, session_id: str) -> Optional[Dict]:
-        """Get session by ID.
+        """Get session by ID with optimized query and expiration check.
         
         Args:
             session_id: Session identifier
             
         Returns:
-            Session dictionary or None if not found
+            Session dictionary or None if not found/expired
         """
+        # Optimized query that checks both active status and expiration
         results = self.db.execute_query(
-            'SELECT * FROM user_sessions WHERE session_id = ? AND is_active = 1',
+            '''SELECT * FROM user_sessions 
+               WHERE session_id = ? 
+               AND is_active = 1 
+               AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP)
+               LIMIT 1''',
             (session_id,)
         )
         
@@ -483,8 +557,9 @@ class AuditLogRepository:
                 event_type: Optional[str] = None,
                 user_id: Optional[str] = None,
                 start_time: Optional[str] = None,
-                end_time: Optional[str] = None) -> List[Dict]:
-        """Get audit logs with filtering.
+                end_time: Optional[str] = None,
+                risk_level: Optional[str] = None) -> List[Dict]:
+        """Get audit logs with optimized filtering and indexing.
         
         Args:
             limit: Maximum number of logs to return
@@ -493,6 +568,7 @@ class AuditLogRepository:
             user_id: Filter by user ID
             start_time: Start time filter
             end_time: End time filter
+            risk_level: Filter by risk level
             
         Returns:
             List of audit log dictionaries
@@ -500,13 +576,18 @@ class AuditLogRepository:
         where_conditions = []
         params = []
         
+        # Order conditions by selectivity for better index usage
+        if user_id:
+            where_conditions.append("user_id = ?")
+            params.append(user_id)
+        
         if event_type:
             where_conditions.append("event_type = ?")
             params.append(event_type)
         
-        if user_id:
-            where_conditions.append("user_id = ?")
-            params.append(user_id)
+        if risk_level:
+            where_conditions.append("risk_level = ?")
+            params.append(risk_level)
         
         if start_time:
             where_conditions.append("timestamp >= ?")
@@ -522,8 +603,11 @@ class AuditLogRepository:
         
         params.extend([limit, offset])
         
+        # Use optimized query with proper index hints
         query = f'''
-            SELECT * FROM audit_logs 
+            SELECT log_id, timestamp, event_type, user_id, session_id, ip_address, 
+                   user_agent, resource, action, outcome, risk_level, details
+            FROM audit_logs 
             {where_clause}
             ORDER BY timestamp DESC 
             LIMIT ? OFFSET ?
@@ -535,6 +619,133 @@ class AuditLogRepository:
             log['details'] = json.loads(log['details'] or '{}')
         
         return results
+    
+    def get_logs_count(self, event_type: Optional[str] = None,
+                      user_id: Optional[str] = None,
+                      start_time: Optional[str] = None,
+                      end_time: Optional[str] = None,
+                      risk_level: Optional[str] = None) -> int:
+        """Get count of audit logs matching filters (optimized for pagination).
+        
+        Args:
+            event_type: Filter by event type
+            user_id: Filter by user ID
+            start_time: Start time filter
+            end_time: End time filter
+            risk_level: Filter by risk level
+            
+        Returns:
+            Count of matching logs
+        """
+        where_conditions = []
+        params = []
+        
+        if user_id:
+            where_conditions.append("user_id = ?")
+            params.append(user_id)
+        
+        if event_type:
+            where_conditions.append("event_type = ?")
+            params.append(event_type)
+        
+        if risk_level:
+            where_conditions.append("risk_level = ?")
+            params.append(risk_level)
+        
+        if start_time:
+            where_conditions.append("timestamp >= ?")
+            params.append(start_time)
+        
+        if end_time:
+            where_conditions.append("timestamp <= ?")
+            params.append(end_time)
+        
+        where_clause = " AND ".join(where_conditions)
+        if where_clause:
+            where_clause = "WHERE " + where_clause
+        
+        query = f'SELECT COUNT(*) as count FROM audit_logs {where_clause}'
+        
+        results = self.db.execute_query(query, tuple(params))
+        return results[0]['count'] if results else 0
+
+
+class DatabaseOptimizer:
+    """Database optimization utilities."""
+    
+    def __init__(self, db_manager: DatabaseManager):
+        """Initialize database optimizer."""
+        self.db = db_manager
+    
+    def analyze_database(self) -> Dict[str, Any]:
+        """Analyze database performance and provide recommendations.
+        
+        Returns:
+            Dictionary with analysis results and recommendations
+        """
+        analysis = {}
+        
+        with self.db.get_connection() as conn:
+            # Table sizes
+            cursor = conn.execute(
+                "SELECT name, COUNT(*) as count FROM sqlite_master WHERE type='table' GROUP BY name"
+            )
+            table_info = cursor.fetchall()
+            
+            analysis['tables'] = {}
+            for table in table_info:
+                table_name = table['name']
+                count_cursor = conn.execute(f"SELECT COUNT(*) as count FROM {table_name}")
+                row_count = count_cursor.fetchone()['count']
+                analysis['tables'][table_name] = {'row_count': row_count}
+            
+            # Index usage statistics (SQLite STAT tables)
+            try:
+                cursor = conn.execute("SELECT * FROM sqlite_stat1")
+                stat_info = cursor.fetchall()
+                analysis['index_stats'] = [dict(row) for row in stat_info]
+            except sqlite3.Error:
+                analysis['index_stats'] = []
+        
+        return analysis
+    
+    def vacuum_database(self) -> bool:
+        """Vacuum database to reclaim space and optimize.
+        
+        Returns:
+            True if vacuum completed successfully
+        """
+        try:
+            with self.db.get_connection() as conn:
+                conn.execute('VACUUM')
+                conn.execute('ANALYZE')
+            return True
+        except Exception:
+            return False
+    
+    def get_slow_queries(self) -> List[str]:
+        """Get recommendations for query optimization.
+        
+        Returns:
+            List of optimization recommendations
+        """
+        recommendations = []
+        
+        # Analyze table sizes and suggest optimizations
+        analysis = self.analyze_database()
+        
+        for table_name, info in analysis.get('tables', {}).items():
+            if info['row_count'] > 10000:
+                recommendations.append(
+                    f"Consider partitioning {table_name} table (has {info['row_count']} rows)"
+                )
+        
+        if analysis.get('tables', {}).get('audit_logs', {}).get('row_count', 0) > 100000:
+            recommendations.append(
+                "Consider implementing audit log archiving for better performance"
+            )
+        
+        return recommendations
 
 
 # Global database instances
@@ -542,3 +753,4 @@ db_manager = DatabaseManager()
 user_repository = UserRepository(db_manager)
 session_repository = SessionRepository(db_manager)
 audit_log_repository = AuditLogRepository(db_manager)
+db_optimizer = DatabaseOptimizer(db_manager)

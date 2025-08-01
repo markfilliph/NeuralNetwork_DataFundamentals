@@ -2,6 +2,7 @@
 
 import json
 import time
+import hashlib
 from typing import Any, Optional, Dict, Union
 from datetime import timedelta
 
@@ -347,6 +348,177 @@ class CacheService:
             Dataset metadata or None if not found
         """
         return self.get(f"dataset:{dataset_id}")
+    
+    def cache_query_result(self, query_hash: str, result: Any, ttl: int = 300) -> bool:
+        """Cache database query result.
+        
+        Args:
+            query_hash: Hash of the query and parameters
+            result: Query result to cache
+            ttl: Time to live in seconds (default 5 minutes)
+            
+        Returns:
+            True if cached successfully
+        """
+        return self.set(f"query:{query_hash}", result, ttl)
+    
+    def get_cached_query_result(self, query_hash: str) -> Optional[Any]:
+        """Get cached query result.
+        
+        Args:
+            query_hash: Hash of the query and parameters
+            
+        Returns:
+            Cached result or None if not found
+        """
+        return self.get(f"query:{query_hash}")
+    
+    def cache_user_data(self, user_id: str, data: Dict[str, Any], ttl: int = 1800) -> bool:
+        """Cache comprehensive user data (profile, permissions, etc).
+        
+        Args:
+            user_id: User identifier
+            data: User data to cache
+            ttl: Time to live in seconds (default 30 minutes)
+            
+        Returns:
+            True if cached successfully
+        """
+        return self.set(f"user_data:{user_id}", data, ttl)
+    
+    def get_cached_user_data(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """Get cached user data.
+        
+        Args:
+            user_id: User identifier
+            
+        Returns:
+            Cached user data or None if not found
+        """
+        return self.get(f"user_data:{user_id}")
+    
+    def invalidate_user_cache(self, user_id: str) -> bool:
+        """Invalidate all cache entries for a user.
+        
+        Args:
+            user_id: User identifier
+            
+        Returns:
+            True if cache invalidated successfully
+        """
+        success = True
+        cache_keys = [
+            f"session:{user_id}",
+            f"permissions:{user_id}",
+            f"user_data:{user_id}"
+        ]
+        
+        for key in cache_keys:
+            if not self.delete(key):
+                success = False
+        
+        return success
+    
+    def cache_api_response(self, endpoint: str, params_hash: str, response: Any, ttl: int = 600) -> bool:
+        """Cache API response.
+        
+        Args:
+            endpoint: API endpoint
+            params_hash: Hash of request parameters
+            response: Response data to cache
+            ttl: Time to live in seconds (default 10 minutes)
+            
+        Returns:
+            True if cached successfully
+        """
+        return self.set(f"api:{endpoint}:{params_hash}", response, ttl)
+    
+    def get_cached_api_response(self, endpoint: str, params_hash: str) -> Optional[Any]:
+        """Get cached API response.
+        
+        Args:
+            endpoint: API endpoint
+            params_hash: Hash of request parameters
+            
+        Returns:
+            Cached response or None if not found
+        """
+        return self.get(f"api:{endpoint}:{params_hash}")
+    
+    def cache_file_metadata(self, file_hash: str, metadata: Dict[str, Any], ttl: int = 3600) -> bool:
+        """Cache file metadata and processing results.
+        
+        Args:
+            file_hash: Hash of the file
+            metadata: File metadata and processing results
+            ttl: Time to live in seconds (default 1 hour)
+            
+        Returns:
+            True if cached successfully
+        """
+        return self.set(f"file:{file_hash}", metadata, ttl)
+    
+    def get_cached_file_metadata(self, file_hash: str) -> Optional[Dict[str, Any]]:
+        """Get cached file metadata.
+        
+        Args:
+            file_hash: Hash of the file
+            
+        Returns:
+            Cached metadata or None if not found
+        """
+        return self.get(f"file:{file_hash}")
+    
+    def warm_cache(self, user_id: str, session_data: Dict[str, Any], permissions: list) -> bool:
+        """Warm cache with frequently accessed user data.
+        
+        Args:
+            user_id: User identifier
+            session_data: Session data
+            permissions: User permissions
+            
+        Returns:
+            True if cache warmed successfully
+        """
+        success = True
+        
+        # Cache session data
+        if not self.cache_user_session(user_id, session_data):
+            success = False
+        
+        # Cache permissions
+        if not self.cache_user_permissions(user_id, permissions):
+            success = False
+        
+        return success
+    
+    def get_cache_health(self) -> Dict[str, Any]:
+        """Get comprehensive cache health metrics.
+        
+        Returns:
+            Dictionary with cache health information
+        """
+        stats = self.get_stats()
+        
+        # Calculate health score
+        health_score = 100
+        
+        if stats['hit_rate_percent'] < 50:
+            health_score -= 30
+        elif stats['hit_rate_percent'] < 70:
+            health_score -= 15
+        
+        if stats['errors'] > stats['total_requests'] * 0.05:  # > 5% error rate
+            health_score -= 25
+        
+        if stats['memory_cache_size'] > 5000:  # Memory cache too large
+            health_score -= 10
+        
+        return {
+            **stats,
+            'health_score': max(0, health_score),
+            'status': 'healthy' if health_score >= 80 else 'degraded' if health_score >= 60 else 'unhealthy'
+        }
 
 
 # Global cache service instance
