@@ -201,6 +201,9 @@ class AuditLogger:
             self.audit_logger.warning(event.to_json())
         else:
             self.audit_logger.info(event.to_json())
+        
+        # Also persist to database
+        self._persist_to_database(event)
     
     def _get_log_level(self, event_type: EventType, outcome: str, risk_level: str) -> LogLevel:
         """Determine log level based on event characteristics.
@@ -236,6 +239,32 @@ class AuditLogger:
             return LogLevel.WARNING
         
         return LogLevel.INFO
+    
+    def _persist_to_database(self, event: AuditEvent) -> None:
+        """Persist audit event to database.
+        
+        Args:
+            event: Audit event to persist
+        """
+        try:
+            # Import here to avoid circular imports
+            from backend.models.database import audit_log_repository
+            
+            audit_log_repository.create_log(
+                event_type=event.event_type.value,
+                outcome=event.outcome,
+                user_id=event.user_id,
+                session_id=event.session_id,
+                ip_address=event.ip_address,
+                user_agent=event.user_agent,
+                resource=event.resource,
+                action=event.action,
+                risk_level=event.risk_level,
+                details=event.details
+            )
+        except Exception as e:
+            # Don't let database errors break audit logging
+            self.app_logger.error(f"Failed to persist audit log to database: {e}")
     
     def log_security_event(self, 
                           event_type: EventType,
