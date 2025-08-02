@@ -1,0 +1,138 @@
+{
+  "sales_performance.csv": {
+    "title": "Sales Performance Dataset",
+    "description": "Regional sales data with performance metrics and customer satisfaction",
+    "size_records": 500,
+    "use_cases": [
+      "Sales analytics",
+      "Regional performance comparison",
+      "Revenue forecasting"
+    ],
+    "target_variables": [
+      "revenue",
+      "customer_satisfaction"
+    ],
+    "key_features": [
+      "region",
+      "product",
+      "quantity",
+      "unit_price",
+      "discount_pct"
+    ],
+    "analysis_suggestions": [
+      "Compare regional performance",
+      "Analyze product profitability",
+      "Predict revenue based on quantity and pricing",
+      "Examine seasonal trends by quarter"
+    ]
+  },
+  "student_performance.csv": {
+    "title": "Student Academic Performance",
+    "description": "Student grades and factors affecting academic performance",
+    "size_records": 300,
+    "use_cases": [
+      "Educational analytics",
+      "Performance prediction",
+      "Factor analysis"
+    ],
+    "target_variables": [
+      "gpa",
+      "math_score",
+      "science_score"
+    ],
+    "key_features": [
+      "study_hours_per_week",
+      "attendance_rate",
+      "extracurricular",
+      "parent_education"
+    ],
+    "analysis_suggestions": [
+      "Predict GPA from study habits and attendance",
+      "Analyze impact of extracurricular activities",
+      "Compare performance across schools",
+      "Examine correlation between subjects"
+    ]
+  },
+  "housing_market.csv": {
+    "title": "Housing Market Analysis",
+    "description": "Real estate data with property features and pricing",
+    "size_records": 400,
+    "use_cases": [
+      "Price prediction",
+      "Market analysis",
+      "Investment decisions"
+    ],
+    "target_variables": [
+      "price",
+      "price_per_sqft",
+      "days_on_market"
+    ],
+    "key_features": [
+      "neighborhood",
+      "square_feet",
+      "bedrooms",
+      "bathrooms",
+      "age_years"
+    ],
+    "analysis_suggestions": [
+      "Predict house prices from features",
+      "Analyze neighborhood price differences",
+      "Examine factors affecting time on market",
+      "Calculate price per square foot trends"
+    ]
+  },
+  "ecommerce_customers.csv": {
+    "title": "E-commerce Customer Behavior",
+    "description": "Customer data with purchasing patterns and engagement metrics",
+    "size_records": 350,
+    "use_cases": [
+      "Customer segmentation",
+      "CLV prediction",
+      "Marketing analytics"
+    ],
+    "target_variables": [
+      "total_spent",
+      "customer_segment",
+      "satisfaction_score"
+    ],
+    "key_features": [
+      "age",
+      "tenure_days",
+      "total_orders",
+      "acquisition_channel"
+    ],
+    "analysis_suggestions": [
+      "Segment customers by behavior patterns",
+      "Predict customer lifetime value",
+      "Analyze acquisition channel effectiveness",
+      "Examine factors affecting satisfaction"
+    ]
+  },
+  "financial_stocks.csv": {
+    "title": "Stock Market Financial Data",
+    "description": "Daily stock prices with technical indicators across sectors",
+    "size_records": 1260,
+    "use_cases": [
+      "Financial analysis",
+      "Price prediction",
+      "Risk assessment"
+    ],
+    "target_variables": [
+      "close",
+      "daily_return"
+    ],
+    "key_features": [
+      "open",
+      "high",
+      "low",
+      "volume",
+      "sector"
+    ],
+    "analysis_suggestions": [
+      "Calculate moving averages and technical indicators",
+      "Analyze sector performance comparison",
+      "Examine volatility patterns",
+      "Predict price movements"
+    ]
+  }
+}

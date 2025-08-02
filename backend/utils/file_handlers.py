@@ -56,13 +56,13 @@ class SecureFileHandler:
                 # Basic file signature detection
                 if ext == '.xlsx' and not (b'PK' in header):
                     raise InvalidFileTypeError("File does not appear to be a valid Excel file")
-                elif ext == '.csv':
-                    # For CSV, check if it's readable text
+                elif ext in ['.csv', '.txt', '.tsv']:
+                    # For text files, check if it's readable text
                     f.seek(0)
                     try:
                         f.read(100).decode('utf-8')
                     except UnicodeDecodeError:
-                        raise InvalidFileTypeError("File does not appear to be valid CSV")
+                        raise InvalidFileTypeError(f"File does not appear to be valid {ext[1:].upper()}")
         except IOError as e:
             raise InvalidFileTypeError(f"Could not read file: {e}")
         

@@ -1,0 +1,301 @@
+student_id,school,grade,study_hours_per_week,attendance_rate,math_score,science_score,english_score,history_score,art_score,gpa,extracurricular,parent_education
+STU_0001,Roosevelt School,10th,7.8,76.0,100.0,94.8,100.0,84.5,100.0,3.83,None,Bachelor
+STU_0002,Roosevelt School,12th,18.3,88.1,100.0,99.6,95.3,84.5,99.1,3.83,Drama,Bachelor
+STU_0003,Roosevelt School,10th,8.6,83.2,96.9,92.1,81.7,100.0,100.0,3.77,Music,Master
+STU_0004,Jefferson Prep,11th,11.2,97.5,100.0,100.0,100.0,100.0,100.0,4.0,None,Bachelor
+STU_0005,Jefferson Prep,10th,14.2,87.2,100.0,92.8,73.2,100.0,97.5,3.71,None,Bachelor
+STU_0006,Roosevelt School,10th,4.0,93.9,62.2,74.4,59.8,75.0,44.5,2.53,Sports,High School
+STU_0007,Lincoln High,9th,0.0,88.1,83.1,71.0,79.3,56.0,73.9,2.91,None,Bachelor
+STU_0008,Jefferson Prep,11th,18.0,92.3,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0009,Lincoln High,10th,15.2,85.1,71.3,94.4,82.3,89.2,82.5,3.36,Drama,Bachelor
+STU_0010,Lincoln High,11th,12.5,68.1,71.4,91.3,57.8,88.4,88.2,3.18,Sports,Master
+STU_0011,Lincoln High,12th,13.7,86.3,86.8,92.2,89.5,91.1,100.0,3.68,Music,High School
+STU_0012,Washington Academy,12th,4.1,82.8,90.1,94.8,98.9,100.0,84.5,3.75,Sports,Bachelor
+STU_0013,Washington Academy,10th,7.9,89.9,96.8,100.0,100.0,100.0,87.5,3.87,Music,High School
+STU_0014,Jefferson Prep,10th,6.2,85.7,100.0,97.2,100.0,84.8,85.5,3.74,Drama,Bachelor
+STU_0015,Roosevelt School,12th,9.9,72.7,92.9,100.0,91.4,96.5,100.0,3.85,Sports,High School
+STU_0016,Roosevelt School,12th,10.7,86.0,98.5,96.6,75.8,99.3,81.7,3.62,None,High School
+STU_0017,Lincoln High,9th,15.3,86.9,100.0,91.2,100.0,100.0,88.0,3.83,Drama,High School
+STU_0018,Jefferson Prep,11th,11.4,64.3,85.5,99.7,82.0,74.0,85.1,3.41,Sports,Bachelor
+STU_0019,Jefferson Prep,9th,15.5,100.0,63.6,80.1,73.8,85.3,73.0,3.01,Sports,High School
+STU_0020,Roosevelt School,9th,0.8,80.7,58.1,46.1,45.1,55.8,79.4,2.28,Music,Master
+STU_0021,Lincoln High,10th,10.3,92.6,100.0,100.0,100.0,88.7,100.0,3.91,Drama,Master
+STU_0022,Jefferson Prep,10th,13.0,94.6,89.8,57.9,84.1,62.3,77.2,2.97,Sports,Bachelor
+STU_0023,Washington Academy,11th,17.3,82.0,100.0,100.0,100.0,100.0,98.5,3.99,Music,High School
+STU_0024,Roosevelt School,9th,1.9,100.0,92.9,89.6,93.6,93.4,76.5,3.57,Drama,Bachelor
+STU_0025,Washington Academy,9th,8.1,96.1,100.0,91.2,100.0,100.0,100.0,3.93,Sports,Bachelor
+STU_0026,Roosevelt School,11th,2.5,75.8,92.5,85.2,89.9,77.4,93.4,3.51,None,Bachelor
+STU_0027,Roosevelt School,12th,8.3,94.7,79.9,62.7,71.9,87.6,78.6,3.05,Sports,High School
+STU_0028,Washington Academy,12th,15.4,87.1,100.0,100.0,100.0,100.0,100.0,4.0,None,High School
+STU_0029,Lincoln High,9th,8.5,94.1,91.6,89.8,96.0,100.0,91.1,3.75,Music,PhD
+STU_0030,Washington Academy,11th,8.6,63.0,61.2,89.6,90.1,81.1,62.2,3.07,Music,High School
+STU_0031,Roosevelt School,11th,8.5,78.1,87.2,73.1,79.8,87.8,87.2,3.32,Sports,High School
+STU_0032,Jefferson Prep,12th,4.5,84.3,89.9,96.8,86.7,73.9,83.2,3.44,None,High School
+STU_0033,Lincoln High,12th,4.8,74.2,87.1,83.5,80.8,73.6,81.5,3.25,None,PhD
+STU_0034,Washington Academy,10th,0.5,88.1,76.5,96.7,83.4,81.8,95.9,3.47,Sports,High School
+STU_0035,Jefferson Prep,10th,6.1,78.7,100.0,100.0,89.3,100.0,77.8,3.74,Sports,High School
+STU_0036,Roosevelt School,11th,13.4,78.9,100.0,100.0,90.9,88.4,100.0,3.83,Drama,Bachelor
+STU_0037,Jefferson Prep,12th,15.7,84.0,100.0,100.0,100.0,100.0,100.0,4.0,Music,Master
+STU_0038,Lincoln High,10th,8.4,86.2,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Bachelor
+STU_0039,Roosevelt School,10th,13.0,90.3,99.1,100.0,89.5,100.0,100.0,3.91,Music,Master
+STU_0040,Lincoln High,12th,10.8,71.2,65.2,43.1,64.3,71.8,75.5,2.56,Music,Bachelor
+STU_0041,Roosevelt School,9th,7.9,78.1,100.0,77.7,93.7,100.0,89.3,3.69,Sports,Bachelor
+STU_0042,Jefferson Prep,9th,16.6,87.1,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0043,Lincoln High,11th,13.2,100.0,100.0,100.0,100.0,100.0,97.6,3.98,Sports,Master
+STU_0044,Washington Academy,9th,10.2,91.9,100.0,96.9,97.5,94.3,81.1,3.76,Drama,High School
+STU_0045,Washington Academy,9th,3.6,93.4,100.0,100.0,100.0,88.6,100.0,3.91,Sports,Bachelor
+STU_0046,Roosevelt School,9th,12.0,82.2,100.0,100.0,100.0,100.0,98.4,3.99,Drama,PhD
+STU_0047,Jefferson Prep,11th,7.9,93.6,100.0,91.2,100.0,98.4,92.1,3.85,Music,Bachelor
+STU_0048,Roosevelt School,11th,18.6,84.0,100.0,100.0,100.0,100.0,100.0,4.0,Music,Bachelor
+STU_0049,Jefferson Prep,11th,12.7,85.7,100.0,100.0,100.0,94.6,100.0,3.96,Sports,Bachelor
+STU_0050,Jefferson Prep,11th,16.9,78.3,100.0,98.7,95.0,100.0,96.9,3.92,Drama,Bachelor
+STU_0051,Roosevelt School,11th,0.0,89.5,96.1,100.0,100.0,93.1,92.2,3.85,None,Bachelor
+STU_0052,Lincoln High,11th,10.3,67.5,75.5,97.7,71.2,80.5,78.1,3.22,Sports,Bachelor
+STU_0053,Roosevelt School,12th,7.2,88.7,100.0,100.0,100.0,100.0,100.0,4.0,None,High School
+STU_0054,Washington Academy,11th,12.8,66.0,100.0,96.0,97.1,83.9,100.0,3.82,Drama,High School
+STU_0055,Jefferson Prep,10th,13.6,87.1,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0056,Lincoln High,9th,9.8,72.7,100.0,100.0,100.0,100.0,100.0,4.0,Music,Bachelor
+STU_0057,Washington Academy,12th,19.9,69.4,100.0,100.0,93.2,100.0,96.5,3.92,Sports,High School
+STU_0058,Roosevelt School,12th,12.3,100.0,100.0,100.0,96.0,83.7,100.0,3.84,Music,High School
+STU_0059,Jefferson Prep,12th,10.8,88.8,100.0,62.6,97.0,55.3,90.9,3.25,Drama,High School
+STU_0060,Washington Academy,9th,0.0,91.8,90.2,84.1,100.0,93.3,85.1,3.62,Drama,High School
+STU_0061,Washington Academy,10th,11.5,88.1,87.4,87.0,70.1,60.0,89.9,3.16,None,Bachelor
+STU_0062,Washington Academy,11th,5.4,79.3,87.8,89.4,66.4,63.9,83.5,3.13,Debate,Bachelor
+STU_0063,Washington Academy,9th,9.1,83.4,77.1,71.6,64.5,94.4,100.0,3.26,Sports,Bachelor
+STU_0064,Lincoln High,10th,13.4,70.0,77.6,73.0,61.1,86.3,64.4,2.9,None,Bachelor
+STU_0065,Washington Academy,11th,7.3,60.0,100.0,97.5,100.0,84.5,100.0,3.86,None,Bachelor
+STU_0066,Jefferson Prep,11th,8.8,76.1,100.0,100.0,100.0,100.0,100.0,4.0,Drama,PhD
+STU_0067,Jefferson Prep,12th,5.5,79.3,100.0,89.9,100.0,96.5,100.0,3.89,Drama,Bachelor
+STU_0068,Roosevelt School,12th,10.0,69.6,100.0,100.0,100.0,100.0,100.0,4.0,None,Master
+STU_0069,Roosevelt School,10th,5.1,100.0,100.0,100.0,100.0,100.0,100.0,4.0,None,PhD
+STU_0070,Jefferson Prep,9th,13.4,63.5,100.0,100.0,100.0,100.0,100.0,4.0,Music,Master
+STU_0071,Roosevelt School,9th,13.8,94.4,100.0,100.0,100.0,100.0,100.0,4.0,Sports,PhD
+STU_0072,Washington Academy,10th,8.4,69.1,87.2,82.2,89.0,81.5,100.0,3.52,None,Bachelor
+STU_0073,Washington Academy,9th,18.3,68.6,100.0,100.0,100.0,100.0,88.4,3.91,Debate,Bachelor
+STU_0074,Jefferson Prep,9th,14.3,68.1,100.0,100.0,100.0,96.4,100.0,3.97,Music,High School
+STU_0075,Jefferson Prep,9th,12.0,96.8,100.0,100.0,100.0,100.0,100.0,4.0,None,Master
+STU_0076,Lincoln High,12th,14.3,80.0,100.0,100.0,100.0,89.7,100.0,3.92,Sports,High School
+STU_0077,Roosevelt School,10th,17.9,72.0,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Bachelor
+STU_0078,Jefferson Prep,11th,11.2,77.8,94.8,90.4,97.3,100.0,100.0,3.86,Music,Bachelor
+STU_0079,Lincoln High,12th,11.9,69.7,80.6,100.0,77.6,87.4,96.9,3.54,Music,High School
+STU_0080,Roosevelt School,11th,19.3,85.3,100.0,100.0,100.0,100.0,100.0,4.0,Music,PhD
+STU_0081,Lincoln High,9th,21.0,81.4,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0082,Lincoln High,11th,9.2,75.8,100.0,100.0,88.9,100.0,100.0,3.91,None,Bachelor
+STU_0083,Lincoln High,12th,8.0,100.0,66.8,97.6,89.3,87.4,87.1,3.43,Music,High School
+STU_0084,Jefferson Prep,9th,15.4,74.2,100.0,85.4,97.6,100.0,100.0,3.86,Music,High School
+STU_0085,Jefferson Prep,12th,14.9,100.0,100.0,100.0,93.0,100.0,99.9,3.94,Drama,Master
+STU_0086,Jefferson Prep,9th,16.0,84.7,100.0,100.0,94.5,100.0,100.0,3.96,Music,Bachelor
+STU_0087,Roosevelt School,12th,0.0,92.9,100.0,88.5,100.0,100.0,100.0,3.91,None,Bachelor
+STU_0088,Jefferson Prep,11th,7.2,81.4,100.0,75.6,98.6,79.3,100.0,3.63,None,High School
+STU_0089,Jefferson Prep,11th,6.8,100.0,100.0,100.0,100.0,94.4,93.7,3.9,None,Bachelor
+STU_0090,Lincoln High,9th,10.6,86.9,100.0,100.0,100.0,100.0,100.0,4.0,None,Master
+STU_0091,Lincoln High,10th,5.5,77.8,73.6,79.6,83.5,73.9,86.9,3.18,Music,Master
+STU_0092,Lincoln High,10th,9.7,85.3,100.0,100.0,100.0,100.0,100.0,4.0,Music,Master
+STU_0093,Jefferson Prep,10th,7.6,97.0,75.7,60.8,84.8,87.5,76.7,3.08,None,Bachelor
+STU_0094,Jefferson Prep,11th,5.4,83.9,84.2,87.7,90.0,72.2,100.0,3.47,Drama,High School
+STU_0095,Washington Academy,11th,8.3,79.0,68.7,100.0,97.3,100.0,75.7,3.53,Music,Bachelor
+STU_0096,Lincoln High,12th,8.7,83.1,100.0,100.0,100.0,100.0,100.0,4.0,None,PhD
+STU_0097,Washington Academy,9th,12.2,100.0,87.9,99.6,100.0,76.7,75.9,3.52,Drama,High School
+STU_0098,Lincoln High,12th,8.2,90.0,100.0,100.0,100.0,100.0,88.8,3.91,Sports,Master
+STU_0099,Roosevelt School,10th,9.3,82.7,100.0,93.8,92.7,90.1,87.1,3.71,Music,High School
+STU_0100,Roosevelt School,10th,3.3,82.2,92.7,65.8,77.1,89.3,77.0,3.22,Sports,PhD
+STU_0101,Washington Academy,12th,8.4,68.7,95.8,100.0,100.0,96.3,100.0,3.94,Sports,High School
+STU_0102,Roosevelt School,9th,5.8,80.2,78.7,76.0,67.6,62.5,84.5,2.95,None,High School
+STU_0103,Roosevelt School,9th,13.8,64.4,100.0,81.6,100.0,92.7,100.0,3.79,None,Bachelor
+STU_0104,Washington Academy,11th,15.0,96.8,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0105,Washington Academy,12th,2.1,74.6,100.0,100.0,100.0,98.0,90.3,3.91,Sports,High School
+STU_0106,Roosevelt School,9th,12.9,89.6,100.0,100.0,100.0,100.0,100.0,4.0,Music,High School
+STU_0107,Lincoln High,10th,17.8,92.4,89.9,90.2,87.4,94.9,91.3,3.63,None,Master
+STU_0108,Roosevelt School,11th,13.4,99.0,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0109,Lincoln High,9th,13.0,84.6,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0110,Washington Academy,9th,18.0,86.0,100.0,100.0,100.0,100.0,97.3,3.98,Sports,High School
+STU_0111,Roosevelt School,11th,0.0,89.9,82.6,100.0,100.0,79.8,93.5,3.65,Debate,Bachelor
+STU_0112,Roosevelt School,9th,13.8,85.0,100.0,100.0,95.7,100.0,100.0,3.97,Sports,High School
+STU_0113,Jefferson Prep,12th,12.1,87.3,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0114,Roosevelt School,11th,5.7,78.3,68.5,70.7,82.9,71.2,65.5,2.87,Debate,Bachelor
+STU_0115,Lincoln High,12th,5.3,89.7,100.0,98.8,100.0,76.2,100.0,3.8,Sports,Master
+STU_0116,Lincoln High,10th,11.2,78.3,79.9,89.3,72.9,67.3,75.7,3.08,Music,PhD
+STU_0117,Roosevelt School,9th,11.1,77.7,59.0,77.1,81.3,84.1,88.1,3.12,Sports,PhD
+STU_0118,Washington Academy,11th,16.0,83.5,97.9,100.0,100.0,100.0,100.0,3.98,None,High School
+STU_0119,Lincoln High,11th,17.3,76.7,100.0,100.0,100.0,100.0,100.0,4.0,Music,Bachelor
+STU_0120,Jefferson Prep,12th,4.8,100.0,100.0,95.7,100.0,100.0,100.0,3.97,None,Master
+STU_0121,Roosevelt School,11th,2.5,69.9,71.3,73.3,70.1,66.3,78.3,2.87,Sports,Bachelor
+STU_0122,Roosevelt School,11th,11.7,89.9,100.0,100.0,100.0,90.7,100.0,3.93,Music,Master
+STU_0123,Roosevelt School,10th,4.1,100.0,88.0,79.0,100.0,89.9,73.6,3.44,None,High School
+STU_0124,Roosevelt School,10th,4.5,91.9,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0125,Lincoln High,9th,1.2,87.6,49.3,44.7,45.0,78.5,33.6,2.01,None,Bachelor
+STU_0126,Washington Academy,11th,10.0,79.6,100.0,88.4,99.8,79.8,91.9,3.68,Sports,Master
+STU_0127,Jefferson Prep,11th,12.3,68.7,95.9,100.0,92.7,75.7,100.0,3.71,Drama,PhD
+STU_0128,Jefferson Prep,12th,22.6,75.1,98.4,100.0,100.0,100.0,100.0,3.99,Debate,Bachelor
+STU_0129,Washington Academy,11th,16.0,92.0,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0130,Jefferson Prep,10th,8.5,68.7,79.2,69.8,76.8,72.8,72.8,2.97,Drama,Bachelor
+STU_0131,Jefferson Prep,12th,5.8,78.8,87.2,97.4,90.0,99.2,100.0,3.79,Sports,Bachelor
+STU_0132,Lincoln High,11th,5.7,76.1,87.3,100.0,100.0,100.0,100.0,3.9,Sports,Bachelor
+STU_0133,Lincoln High,12th,18.6,74.7,96.2,100.0,100.0,87.0,100.0,3.87,Music,Master
+STU_0134,Washington Academy,12th,16.5,94.6,95.4,94.5,100.0,100.0,91.9,3.85,Music,Bachelor
+STU_0135,Roosevelt School,10th,10.1,85.0,100.0,100.0,100.0,100.0,100.0,4.0,Sports,PhD
+STU_0136,Washington Academy,9th,4.7,84.5,100.0,100.0,100.0,100.0,100.0,4.0,None,High School
+STU_0137,Roosevelt School,10th,2.6,89.1,57.5,78.6,75.1,78.8,85.6,3.0,None,PhD
+STU_0138,Jefferson Prep,12th,13.9,67.2,100.0,100.0,100.0,100.0,100.0,4.0,Debate,Master
+STU_0139,Washington Academy,10th,0.0,82.9,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0140,Roosevelt School,10th,18.0,97.2,98.9,93.0,100.0,100.0,100.0,3.94,Sports,Bachelor
+STU_0141,Lincoln High,9th,3.2,88.3,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0142,Lincoln High,11th,8.1,82.9,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0143,Washington Academy,11th,12.7,79.0,60.7,73.2,92.1,94.1,66.9,3.1,Drama,Bachelor
+STU_0144,Roosevelt School,9th,5.6,70.9,73.4,76.2,82.1,57.1,56.3,2.76,Drama,High School
+STU_0145,Roosevelt School,12th,5.4,76.0,77.4,74.4,71.3,69.9,61.0,2.83,Sports,Bachelor
+STU_0146,Washington Academy,12th,10.1,91.2,86.1,76.5,85.6,77.3,70.1,3.16,None,Master
+STU_0147,Jefferson Prep,11th,0.0,68.5,79.3,82.4,89.6,92.4,97.2,3.53,Sports,Bachelor
+STU_0148,Jefferson Prep,9th,15.8,77.2,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Master
+STU_0149,Jefferson Prep,9th,0.5,78.6,100.0,100.0,97.5,100.0,100.0,3.98,Music,Bachelor
+STU_0150,Jefferson Prep,12th,10.8,85.3,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Master
+STU_0151,Roosevelt School,10th,6.3,100.0,100.0,85.1,100.0,100.0,94.7,3.84,Drama,Bachelor
+STU_0152,Jefferson Prep,10th,9.9,73.8,72.9,79.2,73.3,80.9,75.9,3.06,None,Master
+STU_0153,Lincoln High,11th,6.1,75.0,74.8,78.9,81.1,99.8,81.6,3.33,Debate,Master
+STU_0154,Washington Academy,12th,13.6,100.0,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0155,Jefferson Prep,11th,22.1,89.8,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0156,Lincoln High,12th,16.2,74.4,100.0,100.0,76.7,97.8,100.0,3.8,Sports,Bachelor
+STU_0157,Roosevelt School,10th,6.2,90.0,72.4,78.7,87.0,84.7,76.5,3.19,Sports,Bachelor
+STU_0158,Lincoln High,11th,4.4,100.0,85.8,83.9,96.1,86.5,99.1,3.61,Drama,Master
+STU_0159,Washington Academy,11th,2.4,100.0,100.0,93.6,96.4,100.0,93.8,3.87,Debate,High School
+STU_0160,Roosevelt School,12th,5.9,72.1,81.3,75.2,85.6,100.0,87.1,3.43,Drama,Bachelor
+STU_0161,Roosevelt School,10th,4.4,91.0,92.4,96.4,100.0,83.3,88.2,3.68,None,High School
+STU_0162,Roosevelt School,11th,12.9,89.0,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Master
+STU_0163,Washington Academy,9th,5.6,100.0,96.3,100.0,97.8,83.4,91.1,3.75,Music,Bachelor
+STU_0164,Jefferson Prep,11th,8.9,89.0,88.4,78.1,74.4,71.0,70.2,3.06,Drama,Bachelor
+STU_0165,Washington Academy,9th,7.5,70.9,68.6,79.7,82.0,65.0,69.2,2.92,Drama,PhD
+STU_0166,Roosevelt School,10th,1.1,100.0,70.3,76.5,64.2,60.4,51.1,2.58,Debate,High School
+STU_0167,Washington Academy,10th,12.7,82.5,86.1,64.6,100.0,69.2,99.5,3.36,Sports,Bachelor
+STU_0168,Lincoln High,11th,3.8,97.7,97.6,68.9,100.0,90.1,84.7,3.53,Sports,High School
+STU_0169,Washington Academy,9th,0.0,83.8,84.8,73.8,58.2,86.6,75.1,3.03,None,Bachelor
+STU_0170,Washington Academy,11th,11.0,77.2,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Bachelor
+STU_0171,Washington Academy,9th,10.8,79.5,100.0,100.0,100.0,100.0,97.0,3.98,Music,Bachelor
+STU_0172,Jefferson Prep,10th,6.3,81.9,100.0,100.0,100.0,96.6,100.0,3.97,None,High School
+STU_0173,Roosevelt School,12th,13.2,96.5,58.8,82.8,86.9,76.1,63.2,2.94,Drama,High School
+STU_0174,Lincoln High,9th,8.2,72.8,91.3,72.2,84.9,69.1,62.7,3.04,Sports,Bachelor
+STU_0175,Lincoln High,12th,12.5,86.2,95.4,94.7,100.0,100.0,97.7,3.9,None,Master
+STU_0176,Roosevelt School,12th,6.2,84.0,100.0,86.8,100.0,100.0,100.0,3.89,Sports,Bachelor
+STU_0177,Roosevelt School,10th,8.3,84.9,83.4,96.8,95.2,100.0,100.0,3.8,Sports,High School
+STU_0178,Washington Academy,11th,23.6,93.4,100.0,95.9,100.0,100.0,100.0,3.97,Music,High School
+STU_0179,Lincoln High,12th,10.5,85.1,100.0,91.8,100.0,100.0,87.5,3.83,None,Bachelor
+STU_0180,Roosevelt School,11th,13.8,76.6,100.0,84.4,100.0,75.6,89.1,3.59,Music,Bachelor
+STU_0181,Washington Academy,10th,13.1,83.9,76.2,95.7,100.0,100.0,94.8,3.73,None,Master
+STU_0182,Lincoln High,10th,8.8,83.0,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0183,Washington Academy,10th,12.7,84.8,88.7,100.0,99.3,100.0,94.6,3.86,Music,High School
+STU_0184,Roosevelt School,12th,9.1,99.4,94.4,100.0,73.3,98.2,100.0,3.73,Sports,High School
+STU_0185,Jefferson Prep,9th,10.1,86.0,82.6,92.6,100.0,97.5,100.0,3.78,Drama,PhD
+STU_0186,Roosevelt School,9th,14.1,77.8,100.0,100.0,99.0,100.0,100.0,3.99,Music,Master
+STU_0187,Washington Academy,10th,11.0,75.2,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Bachelor
+STU_0188,Washington Academy,10th,10.5,78.6,79.3,71.9,64.2,81.9,61.2,2.87,None,High School
+STU_0189,Jefferson Prep,10th,10.6,89.5,70.9,58.7,83.6,91.2,79.6,3.07,Sports,Master
+STU_0190,Washington Academy,12th,13.0,93.5,100.0,100.0,100.0,100.0,100.0,4.0,None,High School
+STU_0191,Jefferson Prep,10th,21.0,68.2,95.5,100.0,100.0,90.3,97.6,3.87,Debate,Master
+STU_0192,Lincoln High,10th,5.0,76.4,60.6,51.8,99.8,60.7,69.4,2.74,Debate,Master
+STU_0193,Lincoln High,9th,2.8,79.0,100.0,100.0,100.0,92.0,90.9,3.86,None,PhD
+STU_0194,Roosevelt School,11th,15.9,68.4,90.5,93.5,70.5,64.9,100.0,3.36,Sports,Master
+STU_0195,Jefferson Prep,9th,12.9,79.4,84.6,94.9,100.0,100.0,100.0,3.84,Music,Bachelor
+STU_0196,Roosevelt School,12th,8.6,80.4,95.9,100.0,95.9,100.0,94.1,3.89,None,High School
+STU_0197,Roosevelt School,10th,11.7,71.7,100.0,100.0,86.9,100.0,100.0,3.9,Sports,Bachelor
+STU_0198,Jefferson Prep,11th,12.1,75.6,100.0,99.7,81.6,80.7,100.0,3.7,Debate,Bachelor
+STU_0199,Washington Academy,10th,13.9,99.9,100.0,100.0,100.0,100.0,100.0,4.0,Sports,PhD
+STU_0200,Washington Academy,12th,5.1,92.2,99.4,95.8,100.0,100.0,100.0,3.96,Sports,High School
+STU_0201,Roosevelt School,10th,10.9,84.7,100.0,100.0,82.4,100.0,100.0,3.86,Music,PhD
+STU_0202,Jefferson Prep,9th,16.4,90.7,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0203,Lincoln High,9th,16.2,79.8,100.0,100.0,100.0,97.9,86.2,3.87,Sports,High School
+STU_0204,Lincoln High,11th,7.9,100.0,100.0,90.9,62.7,95.2,82.8,3.45,Drama,Bachelor
+STU_0205,Jefferson Prep,10th,11.9,86.8,100.0,100.0,83.3,87.7,100.0,3.77,Sports,High School
+STU_0206,Lincoln High,12th,10.9,75.1,92.8,81.4,84.1,100.0,91.5,3.6,Debate,Master
+STU_0207,Lincoln High,9th,1.4,93.6,94.3,97.7,100.0,89.1,75.3,3.65,Music,High School
+STU_0208,Roosevelt School,9th,12.2,79.8,74.7,78.0,96.1,99.3,88.2,3.49,None,High School
+STU_0209,Roosevelt School,9th,5.7,63.3,58.6,77.5,61.5,67.9,56.4,2.58,None,High School
+STU_0210,Lincoln High,12th,5.6,83.4,82.6,89.3,98.1,96.2,94.2,3.68,Sports,Master
+STU_0211,Jefferson Prep,11th,10.9,89.7,100.0,99.4,90.5,100.0,93.6,3.87,Sports,PhD
+STU_0212,Lincoln High,10th,6.8,77.7,57.8,85.8,90.7,75.5,78.6,3.11,Sports,Bachelor
+STU_0213,Jefferson Prep,11th,11.0,90.6,87.3,59.7,100.0,80.4,90.9,3.35,Sports,Master
+STU_0214,Washington Academy,12th,11.3,77.2,100.0,100.0,100.0,90.6,100.0,3.92,Sports,Bachelor
+STU_0215,Washington Academy,11th,13.3,74.9,100.0,100.0,100.0,100.0,100.0,4.0,Music,High School
+STU_0216,Jefferson Prep,9th,8.0,80.5,100.0,100.0,100.0,100.0,100.0,4.0,Music,Bachelor
+STU_0217,Roosevelt School,11th,4.4,96.0,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Bachelor
+STU_0218,Roosevelt School,9th,15.3,92.9,100.0,100.0,100.0,100.0,85.3,3.88,Sports,Bachelor
+STU_0219,Lincoln High,9th,10.1,74.0,92.8,100.0,100.0,100.0,92.1,3.88,Sports,Bachelor
+STU_0220,Jefferson Prep,9th,14.2,74.3,93.3,87.9,91.1,88.5,100.0,3.69,Sports,High School
+STU_0221,Lincoln High,12th,6.8,69.8,95.8,100.0,96.9,100.0,100.0,3.94,Drama,Master
+STU_0222,Washington Academy,12th,19.9,88.8,100.0,100.0,100.0,100.0,100.0,4.0,Music,High School
+STU_0223,Lincoln High,11th,9.7,99.5,97.3,94.2,87.4,96.3,86.4,3.69,Drama,Master
+STU_0224,Jefferson Prep,11th,9.2,82.6,71.2,75.3,77.8,84.5,56.8,2.92,None,PhD
+STU_0225,Jefferson Prep,12th,16.1,84.9,100.0,100.0,100.0,100.0,95.8,3.97,Sports,Master
+STU_0226,Roosevelt School,10th,21.0,94.6,100.0,100.0,100.0,100.0,100.0,4.0,Debate,Master
+STU_0227,Lincoln High,11th,12.1,73.3,80.8,91.3,87.9,83.8,92.1,3.49,Drama,Bachelor
+STU_0228,Jefferson Prep,11th,7.1,72.5,99.3,100.0,93.6,100.0,100.0,3.94,Sports,High School
+STU_0229,Lincoln High,12th,10.9,88.3,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0230,Jefferson Prep,10th,7.1,88.0,77.2,69.8,86.5,68.1,85.4,3.1,Sports,Master
+STU_0231,Lincoln High,12th,0.8,93.1,74.7,90.4,76.9,73.0,91.6,3.25,Drama,Bachelor
+STU_0232,Jefferson Prep,10th,1.2,89.5,95.5,100.0,100.0,100.0,91.2,3.89,Sports,Bachelor
+STU_0233,Lincoln High,12th,13.0,69.1,100.0,94.8,100.0,100.0,100.0,3.96,Drama,Master
+STU_0234,Roosevelt School,12th,8.4,84.7,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0235,Jefferson Prep,12th,6.8,97.0,100.0,84.0,100.0,100.0,100.0,3.87,Sports,PhD
+STU_0236,Jefferson Prep,9th,11.2,89.8,100.0,100.0,100.0,100.0,100.0,4.0,Music,Bachelor
+STU_0237,Washington Academy,9th,6.3,82.4,92.3,94.1,100.0,97.8,100.0,3.87,Debate,High School
+STU_0238,Jefferson Prep,10th,6.6,84.9,100.0,100.0,94.2,82.7,100.0,3.82,Drama,Master
+STU_0239,Lincoln High,11th,9.6,96.0,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Master
+STU_0240,Jefferson Prep,12th,12.1,97.1,100.0,100.0,100.0,100.0,100.0,4.0,None,Bachelor
+STU_0241,Roosevelt School,9th,10.5,83.2,92.7,82.4,100.0,94.1,90.1,3.67,Sports,High School
+STU_0242,Jefferson Prep,10th,8.1,77.4,100.0,85.2,69.0,45.0,73.2,2.98,Sports,Bachelor
+STU_0243,Jefferson Prep,9th,9.5,94.5,100.0,100.0,100.0,100.0,100.0,4.0,Sports,PhD
+STU_0244,Jefferson Prep,12th,17.6,96.5,100.0,100.0,100.0,100.0,100.0,4.0,Music,Bachelor
+STU_0245,Jefferson Prep,10th,8.5,82.4,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Bachelor
+STU_0246,Lincoln High,9th,8.4,93.6,100.0,100.0,100.0,100.0,100.0,4.0,None,Bachelor
+STU_0247,Roosevelt School,11th,22.4,87.6,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Master
+STU_0248,Roosevelt School,10th,12.6,87.0,100.0,100.0,100.0,100.0,100.0,4.0,None,PhD
+STU_0249,Washington Academy,10th,9.3,88.9,100.0,100.0,100.0,90.2,100.0,3.92,None,High School
+STU_0250,Jefferson Prep,9th,8.5,86.9,78.2,71.0,100.0,77.8,70.6,3.18,Music,Bachelor
+STU_0251,Jefferson Prep,11th,8.0,74.3,78.1,98.7,76.8,100.0,87.7,3.53,Music,Master
+STU_0252,Jefferson Prep,9th,13.1,81.2,74.0,71.2,84.7,78.5,67.2,3.0,Sports,Bachelor
+STU_0253,Lincoln High,12th,10.9,100.0,100.0,100.0,100.0,100.0,100.0,4.0,Debate,Bachelor
+STU_0254,Jefferson Prep,9th,13.1,82.0,90.5,64.5,88.1,67.6,88.7,3.2,None,High School
+STU_0255,Lincoln High,12th,14.1,94.4,82.8,99.8,93.1,78.7,96.2,3.6,Drama,Bachelor
+STU_0256,Washington Academy,12th,8.7,85.8,100.0,100.0,100.0,100.0,94.4,3.96,Sports,Bachelor
+STU_0257,Lincoln High,12th,7.4,83.6,94.9,94.6,100.0,100.0,100.0,3.92,Sports,Master
+STU_0258,Roosevelt School,9th,19.3,77.5,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0259,Washington Academy,11th,11.2,73.4,100.0,98.3,94.6,80.2,83.7,3.65,None,Bachelor
+STU_0260,Lincoln High,11th,14.9,81.1,100.0,100.0,100.0,100.0,90.2,3.92,Drama,Bachelor
+STU_0261,Roosevelt School,12th,13.5,78.2,100.0,96.2,100.0,100.0,100.0,3.97,Debate,Bachelor
+STU_0262,Lincoln High,10th,18.4,88.9,73.7,77.7,71.6,76.7,84.4,3.07,Sports,Bachelor
+STU_0263,Jefferson Prep,12th,16.8,64.1,100.0,100.0,100.0,93.1,100.0,3.94,Sports,Master
+STU_0264,Roosevelt School,12th,4.2,81.4,100.0,100.0,100.0,100.0,100.0,4.0,Sports,PhD
+STU_0265,Roosevelt School,12th,12.4,100.0,100.0,100.0,100.0,100.0,100.0,4.0,Music,High School
+STU_0266,Jefferson Prep,10th,17.6,80.6,100.0,96.4,100.0,100.0,100.0,3.97,None,Bachelor
+STU_0267,Jefferson Prep,9th,10.7,95.2,91.4,78.2,93.0,100.0,82.6,3.56,Sports,Bachelor
+STU_0268,Jefferson Prep,11th,9.0,91.7,100.0,93.3,100.0,100.0,100.0,3.95,Sports,Bachelor
+STU_0269,Jefferson Prep,12th,10.2,98.3,95.6,100.0,100.0,100.0,78.9,3.8,None,High School
+STU_0270,Jefferson Prep,11th,9.6,81.6,78.2,97.1,91.5,99.2,100.0,3.73,Sports,Master
+STU_0271,Washington Academy,12th,7.1,89.1,100.0,100.0,100.0,97.9,100.0,3.98,Music,Master
+STU_0272,Lincoln High,10th,9.3,88.0,96.5,100.0,82.0,91.0,81.6,3.61,Drama,Master
+STU_0273,Washington Academy,10th,5.2,81.9,90.5,96.8,73.7,100.0,83.0,3.55,Sports,High School
+STU_0274,Washington Academy,10th,17.7,89.2,100.0,100.0,100.0,100.0,100.0,4.0,Music,Bachelor
+STU_0275,Jefferson Prep,9th,13.3,93.3,100.0,100.0,100.0,100.0,100.0,4.0,Music,Master
+STU_0276,Lincoln High,10th,10.0,83.2,95.5,82.6,91.5,92.8,100.0,3.7,Debate,Master
+STU_0277,Jefferson Prep,10th,8.6,93.9,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0278,Roosevelt School,9th,15.5,81.2,100.0,100.0,100.0,100.0,100.0,4.0,None,High School
+STU_0279,Jefferson Prep,9th,9.3,63.6,93.6,92.4,96.6,100.0,77.0,3.68,Music,PhD
+STU_0280,Washington Academy,12th,18.3,80.2,100.0,100.0,100.0,100.0,100.0,4.0,None,PhD
+STU_0281,Roosevelt School,10th,13.3,94.7,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0282,Jefferson Prep,9th,9.7,91.5,94.9,100.0,93.4,81.5,100.0,3.76,None,High School
+STU_0283,Jefferson Prep,11th,9.9,75.6,82.6,91.6,90.6,71.6,78.6,3.32,Debate,High School
+STU_0284,Jefferson Prep,12th,23.8,82.5,100.0,100.0,100.0,100.0,100.0,4.0,Drama,Bachelor
+STU_0285,Jefferson Prep,9th,4.1,66.9,67.9,65.9,79.0,67.8,85.4,2.93,Sports,Bachelor
+STU_0286,Roosevelt School,12th,19.8,75.1,100.0,100.0,100.0,100.0,100.0,4.0,Debate,Master
+STU_0287,Lincoln High,12th,19.3,96.0,96.6,77.8,92.8,86.7,83.7,3.5,None,PhD
+STU_0288,Roosevelt School,9th,7.8,80.9,67.8,62.8,73.9,81.2,89.5,3.0,None,High School
+STU_0289,Washington Academy,12th,7.1,91.1,100.0,100.0,88.9,100.0,98.5,3.9,None,High School
+STU_0290,Jefferson Prep,11th,11.6,89.8,100.0,100.0,100.0,100.0,100.0,4.0,None,Bachelor
+STU_0291,Lincoln High,10th,12.1,100.0,100.0,100.0,100.0,100.0,100.0,4.0,Sports,High School
+STU_0292,Roosevelt School,9th,3.7,74.9,69.8,76.4,91.0,82.5,74.8,3.16,None,Bachelor
+STU_0293,Jefferson Prep,9th,11.8,81.9,100.0,100.0,95.0,100.0,100.0,3.96,Music,High School
+STU_0294,Washington Academy,10th,12.8,81.0,79.1,100.0,97.1,100.0,100.0,3.81,Drama,PhD
+STU_0295,Roosevelt School,9th,14.2,87.2,92.2,98.7,96.1,99.2,81.8,3.74,None,Bachelor
+STU_0296,Lincoln High,12th,1.2,82.5,83.7,99.2,83.8,93.9,95.4,3.65,Debate,High School
+STU_0297,Lincoln High,9th,17.7,83.8,100.0,100.0,100.0,100.0,100.0,4.0,Sports,Bachelor
+STU_0298,Washington Academy,12th,6.6,84.1,100.0,80.6,81.6,100.0,100.0,3.7,Sports,Master
+STU_0299,Jefferson Prep,11th,3.8,95.0,100.0,97.4,92.3,100.0,94.2,3.87,Drama,Master
+STU_0300,Lincoln High,12th,10.9,74.8,100.0,100.0,100.0,84.7,100.0,3.88,Sports,Bachelor

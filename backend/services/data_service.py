@@ -228,6 +228,18 @@ class DataProcessingService:
                 except UnicodeDecodeError:
                     continue
             raise ValueError("Could not decode CSV file with any supported encoding")
+        elif extension == '.txt':
+            # Try to detect delimiter for text files
+            for delimiter in [',', '\t', ';', '|']:
+                try:
+                    return pd.read_csv(file_path, delimiter=delimiter, encoding='utf-8')
+                except Exception:
+                    continue
+            # Fallback to comma delimiter
+            return pd.read_csv(file_path, encoding='utf-8')
+        elif extension == '.tsv':
+            # Tab-separated values
+            return pd.read_csv(file_path, delimiter='\t', encoding='utf-8')
         elif extension == '.json':
             return pd.read_json(file_path)
         elif extension == '.parquet':

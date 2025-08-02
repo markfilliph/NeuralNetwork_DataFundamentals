@@ -1,0 +1,401 @@
+house_id,neighborhood,house_type,bedrooms,bathrooms,square_feet,lot_size_acres,age_years,has_garage,has_pool,has_fireplace,price,price_per_sqft,days_on_market,listing_date
+HOUSE_0001,Downtown,Single Family,1,1,799,0.48,40,True,True,False,121255,151.76,10,2025-07-23
+HOUSE_0002,Industrial,Single Family,3,3,2140,1.71,38,True,False,False,153095,71.54,53,2025-06-10
+HOUSE_0003,Industrial,Townhouse,5,4,2964,0.0,18,True,False,True,304585,102.76,3,2025-07-30
+HOUSE_0004,Hillside,Condo,4,3,2306,0.0,30,True,False,False,295653,128.21,59,2025-06-04
+HOUSE_0005,University,Condo,4,4,2445,0.0,6,True,False,True,298840,122.22,52,2025-06-11
+HOUSE_0006,University,Duplex,3,2,1583,1.69,10,True,False,False,180121,113.78,3,2025-07-30
+HOUSE_0007,Suburban,Townhouse,4,4,2831,0.0,12,True,True,True,360676,127.4,19,2025-07-14
+HOUSE_0008,Industrial,Condo,2,1,1523,0.0,7,True,False,False,138369,90.85,62,2025-06-01
+HOUSE_0009,Suburban,Townhouse,5,5,2891,0.0,33,True,False,True,298751,103.34,4,2025-07-29
+HOUSE_0010,University,Duplex,4,4,2647,0.91,48,True,False,False,186678,70.52,83,2025-05-11
+HOUSE_0011,University,Condo,2,1,1771,0.0,37,True,False,True,163568,92.36,111,2025-04-13
+HOUSE_0012,Downtown,Single Family,4,3,2704,1.71,12,False,False,False,460207,170.19,6,2025-07-27
+HOUSE_0013,Industrial,Duplex,4,3,2546,0.6,40,True,False,False,176592,69.36,5,2025-07-28
+HOUSE_0014,Suburban,Condo,2,2,1785,0.0,26,True,False,False,172697,96.75,62,2025-06-01
+HOUSE_0015,Hillside,Single Family,4,4,2452,0.31,40,True,False,False,287045,117.07,98,2025-04-26
+HOUSE_0016,Downtown,Townhouse,1,1,1212,0.0,8,True,True,False,210457,173.64,23,2025-07-10
+HOUSE_0017,Downtown,Condo,3,2,2224,0.0,39,True,False,False,308453,138.69,14,2025-07-19
+HOUSE_0018,University,Duplex,3,2,2135,1.3,23,True,False,False,208989,97.89,2,2025-07-31
+HOUSE_0019,Suburban,Townhouse,4,4,2437,0.0,47,True,False,False,189572,77.79,49,2025-06-14
+HOUSE_0020,Riverside,Townhouse,4,4,2477,0.0,15,True,False,False,475247,191.86,11,2025-07-22
+HOUSE_0021,University,Condo,3,3,1996,0.0,49,False,False,False,124034,62.14,4,2025-07-29
+HOUSE_0022,Industrial,Duplex,4,4,2458,1.29,27,True,False,False,230301,93.69,6,2025-07-27
+HOUSE_0023,Industrial,Townhouse,4,3,2330,0.0,8,True,False,False,232739,99.89,74,2025-05-20
+HOUSE_0024,Suburban,Single Family,5,5,2999,1.22,8,False,False,True,375290,125.14,85,2025-05-09
+HOUSE_0025,Industrial,Single Family,2,2,1781,0.88,23,True,False,True,167738,94.18,61,2025-06-02
+HOUSE_0026,Downtown,Single Family,2,1,1703,0.22,33,True,False,True,211182,124.01,16,2025-07-17
+HOUSE_0027,Hillside,Townhouse,3,2,2299,0.0,19,True,False,True,411376,178.94,23,2025-07-10
+HOUSE_0028,Suburban,Duplex,3,3,1975,1.7,33,True,False,True,176037,89.13,102,2025-04-22
+HOUSE_0029,Suburban,Townhouse,4,4,2353,0.0,35,True,True,False,270434,114.93,78,2025-05-16
+HOUSE_0030,Downtown,Townhouse,2,1,1520,0.0,43,True,False,False,151024,99.36,1,2025-08-01
+HOUSE_0031,University,Townhouse,4,4,2087,0.0,48,True,True,True,209060,100.17,133,2025-03-22
+HOUSE_0032,Industrial,Duplex,4,4,2279,0.85,12,True,True,False,233563,102.49,38,2025-06-25
+HOUSE_0033,Suburban,Single Family,3,3,2394,1.68,29,True,False,False,263293,109.98,162,2025-02-21
+HOUSE_0034,Suburban,Single Family,3,3,1924,0.7,20,True,False,True,236514,122.93,10,2025-07-23
+HOUSE_0035,Hillside,Townhouse,5,5,2822,0.0,4,True,False,False,643946,228.19,1,2025-08-01
+HOUSE_0036,Industrial,Townhouse,4,4,2400,0.0,32,False,False,False,142971,59.57,112,2025-04-12
+HOUSE_0037,Riverside,Duplex,4,4,2244,0.36,31,True,False,False,298648,133.09,13,2025-07-20
+HOUSE_0038,Suburban,Single Family,3,3,1859,0.92,19,True,False,True,201033,108.14,18,2025-07-15
+HOUSE_0039,Suburban,Duplex,4,4,2272,0.53,20,False,False,True,313720,138.08,4,2025-07-29
+HOUSE_0040,Hillside,Townhouse,4,4,2368,0.0,25,False,False,True,424945,179.45,7,2025-07-26
+HOUSE_0041,Suburban,Townhouse,5,5,2719,0.0,16,True,False,False,430166,158.21,16,2025-07-17
+HOUSE_0042,Industrial,Duplex,3,3,2164,0.2,21,True,False,True,220707,101.99,27,2025-07-06
+HOUSE_0043,University,Single Family,3,3,1975,1.17,47,True,False,False,142660,72.23,83,2025-05-11
+HOUSE_0044,Hillside,Duplex,2,2,1667,1.9,45,True,True,False,197273,118.34,49,2025-06-14
+HOUSE_0045,Hillside,Condo,3,3,2193,0.0,8,False,False,False,437455,199.48,15,2025-07-18
+HOUSE_0046,Industrial,Single Family,4,4,2116,1.81,3,False,True,False,216693,102.41,24,2025-07-09
+HOUSE_0047,Riverside,Duplex,2,2,1631,0.28,31,True,False,False,183801,112.69,97,2025-04-27
+HOUSE_0048,Riverside,Duplex,3,2,1822,1.9,5,False,False,True,348742,191.41,15,2025-07-18
+HOUSE_0049,Suburban,Townhouse,4,4,2804,0.0,7,True,False,True,385366,137.43,55,2025-06-08
+HOUSE_0050,Riverside,Single Family,4,3,2766,1.79,17,True,False,True,405803,146.71,85,2025-05-09
+HOUSE_0051,Industrial,Duplex,2,2,1875,1.73,1,True,False,True,247944,132.24,9,2025-07-24
+HOUSE_0052,Downtown,Single Family,2,2,1752,0.71,9,True,True,True,379143,216.41,5,2025-07-28
+HOUSE_0053,Downtown,Single Family,3,2,2334,1.55,24,True,False,True,447699,191.82,6,2025-07-27
+HOUSE_0054,Suburban,Duplex,2,2,1419,0.96,44,True,False,True,118115,83.24,33,2025-06-30
+HOUSE_0055,Hillside,Townhouse,4,4,2260,0.0,3,False,False,True,445073,196.94,3,2025-07-30
+HOUSE_0056,Industrial,Townhouse,3,2,2398,0.0,38,False,False,False,166089,69.26,7,2025-07-26
+HOUSE_0057,University,Single Family,4,4,2421,1.85,35,True,False,False,235522,97.28,34,2025-06-29
+HOUSE_0058,Hillside,Townhouse,4,4,2105,0.0,38,True,True,True,276280,131.25,13,2025-07-20
+HOUSE_0059,Riverside,Single Family,3,2,1859,1.77,16,False,False,True,252568,135.86,6,2025-07-27
+HOUSE_0060,University,Condo,3,3,2086,0.0,10,False,True,False,325179,155.89,2,2025-07-31
+HOUSE_0061,Hillside,Single Family,2,2,1601,1.5,41,True,False,True,181994,113.68,21,2025-07-12
+HOUSE_0062,Suburban,Single Family,5,5,2697,1.49,19,True,True,True,460136,170.61,21,2025-07-12
+HOUSE_0063,Downtown,Townhouse,4,4,2443,0.0,49,True,True,True,251529,102.96,8,2025-07-25
+HOUSE_0064,Industrial,Single Family,4,4,2329,1.76,36,True,False,False,145491,62.47,22,2025-07-11
+HOUSE_0065,Industrial,Duplex,5,5,2624,1.66,24,True,False,True,234304,89.29,7,2025-07-26
+HOUSE_0066,Suburban,Townhouse,5,4,2701,0.0,42,True,False,True,252243,93.39,11,2025-07-22
+HOUSE_0067,Industrial,Single Family,4,4,2756,1.09,15,True,False,False,307542,111.59,6,2025-07-27
+HOUSE_0068,University,Single Family,3,3,1869,0.93,13,True,False,True,242980,130.01,52,2025-06-11
+HOUSE_0069,Riverside,Duplex,3,3,1682,1.23,29,True,True,True,235042,139.74,57,2025-06-06
+HOUSE_0070,Hillside,Single Family,3,3,2144,1.15,6,True,False,True,392659,183.14,48,2025-06-15
+HOUSE_0071,Suburban,Duplex,4,4,2170,1.16,6,True,False,False,284414,131.07,25,2025-07-08
+HOUSE_0072,Downtown,Condo,3,3,2378,0.0,19,True,False,False,386454,162.51,3,2025-07-30
+HOUSE_0073,University,Single Family,4,4,2139,1.17,47,True,False,False,147292,68.86,119,2025-04-05
+HOUSE_0074,Industrial,Single Family,3,3,1751,1.58,26,True,False,False,133718,76.37,47,2025-06-16
+HOUSE_0075,Downtown,Single Family,2,1,2120,1.82,33,True,False,False,305319,144.02,76,2025-05-18
+HOUSE_0076,Hillside,Single Family,2,2,1861,0.25,2,True,True,False,486784,261.57,11,2025-07-22
+HOUSE_0077,Hillside,Townhouse,3,3,2215,0.0,48,True,False,True,302115,136.4,1,2025-08-01
+HOUSE_0078,Downtown,Duplex,4,4,2396,1.64,39,False,False,False,317643,132.57,220,2024-12-25
+HOUSE_0079,Suburban,Single Family,3,3,1885,1.06,26,True,False,False,252290,133.84,18,2025-07-15
+HOUSE_0080,Hillside,Townhouse,1,1,1229,0.0,19,True,False,False,204139,166.1,29,2025-07-04
+HOUSE_0081,Riverside,Duplex,4,4,2200,1.38,28,False,False,True,237094,107.77,31,2025-07-02
+HOUSE_0082,Hillside,Single Family,2,2,1402,0.16,13,True,False,True,234785,167.46,4,2025-07-29
+HOUSE_0083,Downtown,Townhouse,3,2,1904,0.0,23,True,False,False,247440,129.96,39,2025-06-24
+HOUSE_0084,Downtown,Single Family,5,4,2903,0.71,41,False,True,True,451408,155.5,6,2025-07-27
+HOUSE_0085,University,Condo,2,2,1831,0.0,34,True,False,True,146561,80.04,15,2025-07-18
+HOUSE_0086,Riverside,Townhouse,3,3,1962,0.0,14,True,False,False,269189,137.2,75,2025-05-19
+HOUSE_0087,Industrial,Townhouse,4,4,2517,0.0,32,True,False,False,165597,65.79,39,2025-06-24
+HOUSE_0088,Downtown,Condo,4,3,2509,0.0,32,False,False,False,290248,115.68,32,2025-07-01
+HOUSE_0089,Hillside,Duplex,4,3,2424,1.14,37,True,False,True,277952,114.67,12,2025-07-21
+HOUSE_0090,Suburban,Single Family,3,3,2062,0.71,1,False,False,False,276859,134.27,20,2025-07-13
+HOUSE_0091,Hillside,Condo,4,3,2348,0.0,11,True,False,False,487456,207.6,22,2025-07-11
+HOUSE_0092,Suburban,Single Family,5,5,3035,0.18,40,True,True,False,326436,107.56,12,2025-07-21
+HOUSE_0093,Suburban,Condo,2,1,1844,0.0,13,True,False,False,263789,143.05,16,2025-07-17
+HOUSE_0094,Downtown,Single Family,5,5,2466,0.62,24,True,False,True,470996,191.0,13,2025-07-20
+HOUSE_0095,Suburban,Condo,3,2,2040,0.0,26,True,False,True,263993,129.41,6,2025-07-27
+HOUSE_0096,Hillside,Condo,2,1,1586,0.0,45,False,True,True,183847,115.92,24,2025-07-09
+HOUSE_0097,Hillside,Townhouse,3,3,1866,0.0,15,False,False,True,340229,182.33,36,2025-06-27
+HOUSE_0098,Riverside,Condo,1,1,1149,0.0,7,True,True,True,233564,203.28,21,2025-07-12
+HOUSE_0099,Hillside,Condo,4,4,2126,0.0,21,False,False,True,385633,181.39,73,2025-05-21
+HOUSE_0100,Industrial,Duplex,3,3,2352,1.91,39,True,False,True,175740,74.72,17,2025-07-16
+HOUSE_0101,Downtown,Duplex,4,4,2237,0.29,15,True,False,False,384685,171.97,40,2025-06-23
+HOUSE_0102,University,Duplex,3,3,1974,0.71,40,True,False,False,137754,69.78,52,2025-06-11
+HOUSE_0103,University,Condo,4,3,2264,0.0,11,True,False,False,272767,120.48,6,2025-07-27
+HOUSE_0104,University,Townhouse,2,2,1786,0.0,9,False,False,False,219776,123.06,101,2025-04-23
+HOUSE_0105,University,Condo,3,3,2339,0.0,11,False,False,True,329983,141.08,5,2025-07-28
+HOUSE_0106,Industrial,Single Family,3,3,2398,0.54,38,True,False,False,166660,69.5,3,2025-07-30
+HOUSE_0107,Riverside,Single Family,2,1,1591,0.7,9,False,False,False,277813,174.62,123,2025-04-01
+HOUSE_0108,Suburban,Townhouse,1,1,1099,0.0,10,True,False,True,146183,133.01,63,2025-05-31
+HOUSE_0109,Industrial,Townhouse,4,4,2497,0.0,42,True,False,False,142868,57.22,11,2025-07-22
+HOUSE_0110,Riverside,Townhouse,3,3,2039,0.0,46,True,False,True,200554,98.36,13,2025-07-20
+HOUSE_0111,Hillside,Duplex,5,5,2783,0.47,8,True,False,False,493243,177.23,7,2025-07-26
+HOUSE_0112,Suburban,Duplex,4,4,2308,0.72,46,True,False,True,175694,76.12,34,2025-06-29
+HOUSE_0113,Hillside,Duplex,5,5,2547,0.95,13,False,False,True,534927,210.02,24,2025-07-09
+HOUSE_0114,Downtown,Townhouse,3,3,1701,0.0,34,True,False,True,241427,141.93,135,2025-03-20
+HOUSE_0115,Suburban,Single Family,3,3,2249,1.27,10,True,False,False,335856,149.34,21,2025-07-12
+HOUSE_0116,Industrial,Duplex,2,2,1627,1.05,21,True,False,False,119221,73.28,32,2025-07-01
+HOUSE_0117,Downtown,Townhouse,4,3,2136,0.0,41,True,False,False,265407,124.25,25,2025-07-08
+HOUSE_0118,Industrial,Condo,3,2,1764,0.0,19,False,False,True,149378,84.68,17,2025-07-16
+HOUSE_0119,Industrial,Townhouse,3,3,2043,0.0,11,True,False,False,184048,90.09,20,2025-07-13
+HOUSE_0120,Riverside,Condo,1,1,1455,0.0,17,False,False,True,182302,125.29,11,2025-07-22
+HOUSE_0121,Industrial,Single Family,4,4,2458,1.5,28,True,False,False,156296,63.59,64,2025-05-30
+HOUSE_0122,Downtown,Townhouse,3,3,2151,0.0,49,False,False,False,248087,115.34,3,2025-07-30
+HOUSE_0123,Suburban,Duplex,2,2,1779,1.77,42,True,False,True,180830,101.65,20,2025-07-13
+HOUSE_0124,Downtown,Duplex,4,4,2332,1.56,45,False,False,True,244306,104.76,41,2025-06-22
+HOUSE_0125,Hillside,Condo,3,3,2165,0.0,1,False,True,True,445533,205.79,1,2025-08-01
+HOUSE_0126,Downtown,Single Family,2,1,1664,1.07,6,True,False,True,356551,214.27,35,2025-06-28
+HOUSE_0127,Riverside,Duplex,3,2,1929,1.4,27,True,False,True,280732,145.53,19,2025-07-14
+HOUSE_0128,University,Single Family,3,2,1914,1.73,45,True,False,False,145376,75.95,60,2025-06-03
+HOUSE_0129,Industrial,Townhouse,3,2,1991,0.0,14,True,False,False,197738,99.32,23,2025-07-10
+HOUSE_0130,Downtown,Duplex,5,5,2463,0.79,8,True,False,False,510883,207.42,52,2025-06-11
+HOUSE_0131,Downtown,Townhouse,3,3,2015,0.0,28,False,False,True,255295,126.7,63,2025-05-31
+HOUSE_0132,Riverside,Townhouse,2,1,1112,0.0,6,True,False,True,243490,218.97,13,2025-07-20
+HOUSE_0133,University,Single Family,3,2,2130,0.28,41,False,False,False,160887,75.53,7,2025-07-26
+HOUSE_0134,Hillside,Duplex,4,4,2362,1.87,2,True,False,False,548639,232.28,5,2025-07-28
+HOUSE_0135,Hillside,Single Family,1,1,1355,0.59,23,True,False,True,215144,158.78,72,2025-05-22
+HOUSE_0136,Downtown,Condo,2,1,1587,0.0,36,True,False,False,171329,107.96,6,2025-07-27
+HOUSE_0137,Suburban,Single Family,2,1,1287,0.6,39,True,True,False,111243,86.44,46,2025-06-17
+HOUSE_0138,Suburban,Condo,2,1,1311,0.0,37,True,True,False,165981,126.61,45,2025-06-18
+HOUSE_0139,University,Single Family,3,3,1939,1.08,27,True,False,False,165640,85.43,21,2025-07-12
+HOUSE_0140,Downtown,Townhouse,3,2,2038,0.0,7,True,True,False,486718,238.82,17,2025-07-16
+HOUSE_0141,Hillside,Condo,3,3,2005,0.0,12,True,False,False,335165,167.17,12,2025-07-21
+HOUSE_0142,Downtown,Duplex,5,5,2814,0.15,34,False,False,True,434037,154.24,6,2025-07-27
+HOUSE_0143,Hillside,Townhouse,4,4,2296,0.0,6,True,True,True,533245,232.25,12,2025-07-21
+HOUSE_0144,Riverside,Townhouse,3,2,1892,0.0,2,False,False,False,306816,162.17,25,2025-07-08
+HOUSE_0145,Downtown,Duplex,3,3,1996,0.67,40,True,False,False,279057,139.81,26,2025-07-07
+HOUSE_0146,Hillside,Condo,2,2,1495,0.0,8,True,False,False,260037,173.94,48,2025-06-15
+HOUSE_0147,Suburban,Condo,3,3,1977,0.0,26,True,False,True,236644,119.7,14,2025-07-19
+HOUSE_0148,Riverside,Townhouse,4,4,2210,0.0,49,True,False,False,191010,86.43,163,2025-02-20
+HOUSE_0149,Industrial,Duplex,3,3,1919,0.44,29,True,False,False,121109,63.11,12,2025-07-21
+HOUSE_0150,Downtown,Single Family,4,4,2501,0.15,37,True,False,False,269700,107.84,20,2025-07-13
+HOUSE_0151,Industrial,Townhouse,4,4,2346,0.0,9,True,False,True,245750,104.75,1,2025-08-01
+HOUSE_0152,Suburban,Condo,1,1,1223,0.0,1,True,True,False,181956,148.78,10,2025-07-23
+HOUSE_0153,Industrial,Condo,5,4,2799,0.0,15,True,False,True,267439,95.55,123,2025-04-01
+HOUSE_0154,University,Duplex,4,4,2741,0.69,46,True,False,False,186989,68.22,102,2025-04-22
+HOUSE_0155,Suburban,Single Family,4,4,2408,0.89,32,False,False,True,224565,93.26,107,2025-04-17
+HOUSE_0156,University,Condo,3,3,1743,0.0,35,True,False,True,160427,92.04,42,2025-06-21
+HOUSE_0157,Industrial,Condo,4,3,2127,0.0,37,False,True,True,156192,73.43,33,2025-06-30
+HOUSE_0158,Suburban,Condo,3,3,2277,0.0,38,True,False,True,235867,103.59,24,2025-07-09
+HOUSE_0159,Industrial,Single Family,5,5,2511,1.74,23,True,False,True,218537,87.03,26,2025-07-07
+HOUSE_0160,Suburban,Townhouse,4,3,2235,0.0,3,True,False,False,401231,179.52,28,2025-07-05
+HOUSE_0161,Riverside,Townhouse,3,3,1920,0.0,42,False,False,False,226051,117.74,2,2025-07-31
+HOUSE_0162,Hillside,Single Family,5,5,3095,1.27,20,True,False,False,480324,155.19,34,2025-06-29
+HOUSE_0163,Industrial,Single Family,5,5,2732,0.85,48,True,True,False,156538,57.3,1,2025-08-01
+HOUSE_0164,Riverside,Townhouse,4,4,2453,0.0,41,True,False,True,254580,103.78,8,2025-07-25
+HOUSE_0165,Downtown,Duplex,5,5,2811,0.37,29,False,True,False,374557,133.25,28,2025-07-05
+HOUSE_0166,Downtown,Single Family,3,3,1860,1.93,46,True,False,True,239910,128.98,28,2025-07-05
+HOUSE_0167,Downtown,Townhouse,1,1,1243,0.0,32,False,False,False,192637,154.98,33,2025-06-30
+HOUSE_0168,Downtown,Single Family,2,1,1550,1.1,20,True,False,True,251911,162.52,75,2025-05-19
+HOUSE_0169,Industrial,Single Family,1,1,1178,1.18,5,True,False,True,127989,108.65,6,2025-07-27
+HOUSE_0170,Riverside,Townhouse,4,3,2344,0.0,43,True,False,True,258597,110.32,12,2025-07-21
+HOUSE_0171,University,Duplex,3,3,1991,0.58,44,False,False,False,161559,81.14,2,2025-07-31
+HOUSE_0172,Riverside,Duplex,2,2,1532,1.65,18,False,False,True,243955,159.24,85,2025-05-09
+HOUSE_0173,Riverside,Duplex,3,2,2047,1.79,2,False,False,False,357268,174.53,80,2025-05-14
+HOUSE_0174,University,Condo,3,3,1785,0.0,34,True,True,True,193591,108.45,63,2025-05-31
+HOUSE_0175,University,Townhouse,4,4,2410,0.0,23,True,False,False,229740,95.33,76,2025-05-18
+HOUSE_0176,Riverside,Single Family,5,5,2841,1.34,27,True,False,True,442950,155.91,7,2025-07-26
+HOUSE_0177,Riverside,Condo,5,4,2765,0.0,27,True,False,False,403857,146.06,96,2025-04-28
+HOUSE_0178,Hillside,Duplex,4,3,2250,1.87,32,True,False,False,372752,165.67,52,2025-06-11
+HOUSE_0179,Hillside,Townhouse,4,4,2307,0.0,41,True,False,True,341517,148.04,70,2025-05-24
+HOUSE_0180,Suburban,Condo,4,3,2421,0.0,25,True,False,True,251267,103.79,8,2025-07-25
+HOUSE_0181,Hillside,Single Family,3,2,1494,1.53,3,True,False,False,264988,177.37,54,2025-06-09
+HOUSE_0182,University,Condo,4,4,2389,0.0,23,False,False,True,305062,127.69,46,2025-06-17
+HOUSE_0183,Suburban,Condo,4,4,2384,0.0,9,True,False,False,367765,154.26,22,2025-07-11
+HOUSE_0184,Suburban,Single Family,4,4,2520,0.22,42,True,False,False,193338,76.72,12,2025-07-21
+HOUSE_0185,Downtown,Townhouse,3,3,1776,0.0,9,True,False,True,276211,155.52,7,2025-07-26
+HOUSE_0186,Hillside,Single Family,2,1,1614,0.14,38,True,False,False,234191,145.1,9,2025-07-24
+HOUSE_0187,Industrial,Townhouse,3,3,2037,0.0,15,False,False,False,156075,76.62,86,2025-05-08
+HOUSE_0188,Suburban,Duplex,3,2,1961,0.5,11,True,False,False,279894,142.73,4,2025-07-29
+HOUSE_0189,Hillside,Duplex,2,2,1337,1.62,9,True,False,False,318942,238.55,35,2025-06-28
+HOUSE_0190,Hillside,Single Family,2,2,1652,1.64,17,True,True,False,339453,205.48,22,2025-07-11
+HOUSE_0191,Industrial,Duplex,4,3,2612,0.65,8,False,False,False,232484,89.01,9,2025-07-24
+HOUSE_0192,Riverside,Condo,3,3,2179,0.0,14,True,False,True,353421,162.19,45,2025-06-18
+HOUSE_0193,Suburban,Single Family,5,5,2566,1.33,11,True,False,False,339006,132.11,4,2025-07-29
+HOUSE_0194,Industrial,Single Family,4,4,2694,0.64,4,False,True,True,276707,102.71,5,2025-07-28
+HOUSE_0195,University,Townhouse,4,4,2466,0.0,24,True,False,False,262393,106.4,12,2025-07-21
+HOUSE_0196,Suburban,Duplex,5,5,3167,0.57,41,False,False,False,235882,74.48,80,2025-05-14
+HOUSE_0197,Suburban,Townhouse,4,4,2712,0.0,19,True,False,True,413011,152.29,12,2025-07-21
+HOUSE_0198,Industrial,Duplex,1,1,1006,1.65,12,False,False,False,109026,108.38,2,2025-07-31
+HOUSE_0199,Downtown,Condo,3,2,2158,0.0,4,True,False,True,425259,197.06,29,2025-07-04
+HOUSE_0200,Riverside,Condo,3,3,1609,0.0,49,True,False,False,168019,104.42,11,2025-07-22
+HOUSE_0201,Industrial,Single Family,3,2,2135,1.65,24,True,False,False,189104,88.57,1,2025-08-01
+HOUSE_0202,Suburban,Condo,3,2,2115,0.0,28,True,True,True,259652,122.77,10,2025-07-23
+HOUSE_0203,Industrial,Duplex,3,2,2051,1.41,17,False,False,False,192198,93.71,29,2025-07-04
+HOUSE_0204,Industrial,Townhouse,4,4,2595,0.0,47,False,False,False,124148,47.84,10,2025-07-23
+HOUSE_0205,Hillside,Duplex,3,2,1909,1.99,6,False,False,False,316128,165.6,61,2025-06-02
+HOUSE_0206,Hillside,Duplex,5,5,3106,0.26,6,False,False,False,596353,192.0,42,2025-06-21
+HOUSE_0207,Riverside,Condo,2,1,1600,0.0,7,True,False,True,280672,175.42,7,2025-07-26
+HOUSE_0208,Riverside,Condo,4,4,2012,0.0,43,True,False,False,250844,124.67,23,2025-07-10
+HOUSE_0209,Riverside,Townhouse,4,3,2559,0.0,15,True,True,False,364057,142.27,51,2025-06-12
+HOUSE_0210,Suburban,Single Family,4,3,2248,0.18,5,True,False,False,326668,145.31,21,2025-07-12
+HOUSE_0211,Riverside,Duplex,4,4,2451,1.1,10,True,False,False,454286,185.35,36,2025-06-27
+HOUSE_0212,Suburban,Duplex,2,2,1857,1.29,13,False,False,False,250323,134.8,15,2025-07-18
+HOUSE_0213,University,Condo,3,3,1919,0.0,31,False,False,False,206519,107.62,1,2025-08-01
+HOUSE_0214,Suburban,Condo,2,1,1925,0.0,14,False,False,False,278887,144.88,39,2025-06-24
+HOUSE_0215,Hillside,Condo,4,3,2506,0.0,36,True,True,False,380252,151.74,35,2025-06-28
+HOUSE_0216,Hillside,Townhouse,3,2,1688,0.0,47,False,False,False,208134,123.3,51,2025-06-12
+HOUSE_0217,Industrial,Condo,5,4,2891,0.0,38,True,False,False,182167,63.01,14,2025-07-19
+HOUSE_0218,Suburban,Duplex,4,3,2582,1.33,48,True,True,False,220145,85.26,3,2025-07-30
+HOUSE_0219,Hillside,Single Family,3,2,1861,1.6,45,True,True,False,251197,134.98,66,2025-05-28
+HOUSE_0220,Hillside,Single Family,3,3,1977,1.29,29,True,False,True,348647,176.35,105,2025-04-19
+HOUSE_0221,University,Condo,3,3,1952,0.0,13,True,False,False,210339,107.76,15,2025-07-18
+HOUSE_0222,University,Townhouse,3,2,1571,0.0,41,True,False,True,132194,84.15,22,2025-07-11
+HOUSE_0223,University,Townhouse,5,4,2802,0.0,37,True,False,False,264102,94.25,20,2025-07-13
+HOUSE_0224,Industrial,Single Family,4,3,2167,1.94,20,True,True,False,233235,107.63,12,2025-07-21
+HOUSE_0225,Industrial,Condo,4,4,2505,0.0,37,False,False,True,198996,79.44,3,2025-07-30
+HOUSE_0226,Suburban,Duplex,3,3,1522,0.87,47,False,False,True,101693,66.82,95,2025-04-29
+HOUSE_0227,University,Duplex,2,1,1875,0.95,34,True,False,False,164610,87.79,2,2025-07-31
+HOUSE_0228,Riverside,Condo,4,3,2286,0.0,25,True,False,True,395013,172.8,57,2025-06-06
+HOUSE_0229,University,Single Family,4,4,2214,0.81,2,True,False,False,303756,137.2,18,2025-07-15
+HOUSE_0230,Riverside,Condo,3,2,2221,0.0,21,True,False,True,281447,126.72,36,2025-06-27
+HOUSE_0231,Industrial,Duplex,3,2,1741,1.0,37,True,False,False,137689,79.09,52,2025-06-11
+HOUSE_0232,Riverside,Duplex,2,1,1778,1.72,32,True,False,False,206298,116.03,43,2025-06-20
+HOUSE_0233,Downtown,Duplex,4,3,2066,0.46,21,True,False,False,313831,151.9,17,2025-07-16
+HOUSE_0234,Hillside,Duplex,4,4,2621,0.92,4,True,False,True,489933,186.93,6,2025-07-27
+HOUSE_0235,University,Townhouse,3,3,1874,0.0,14,True,False,True,280721,149.8,35,2025-06-28
+HOUSE_0236,Industrial,Duplex,4,4,2641,1.35,10,True,False,True,238946,90.48,3,2025-07-30
+HOUSE_0237,Downtown,Duplex,1,1,1275,0.44,16,True,False,True,267806,210.04,18,2025-07-15
+HOUSE_0238,Hillside,Duplex,1,1,657,0.23,45,True,False,False,92369,140.59,6,2025-07-27
+HOUSE_0239,Riverside,Single Family,3,3,2178,0.33,2,False,False,False,442485,203.16,24,2025-07-09
+HOUSE_0240,Industrial,Condo,3,3,1744,0.0,23,True,False,False,156267,89.6,33,2025-06-30
+HOUSE_0241,Suburban,Townhouse,4,4,2180,0.0,8,False,True,True,313423,143.77,71,2025-05-23
+HOUSE_0242,Industrial,Single Family,4,4,2759,0.51,14,False,False,True,306317,111.02,21,2025-07-12
+HOUSE_0243,University,Townhouse,2,2,1660,0.0,10,True,True,False,205853,124.01,1,2025-08-01
+HOUSE_0244,Suburban,Duplex,2,2,1551,0.18,36,True,False,False,167769,108.17,14,2025-07-19
+HOUSE_0245,University,Duplex,5,5,2712,1.63,36,True,False,True,269378,99.33,18,2025-07-15
+HOUSE_0246,Suburban,Townhouse,2,2,1692,0.0,32,True,False,False,187327,110.71,18,2025-07-15
+HOUSE_0247,Hillside,Single Family,3,3,1881,1.15,11,True,True,False,374751,199.23,70,2025-05-24
+HOUSE_0248,Suburban,Duplex,4,4,2375,0.77,5,False,False,False,304744,128.31,25,2025-07-08
+HOUSE_0249,Suburban,Condo,4,4,2415,0.0,30,True,False,False,229088,94.86,8,2025-07-25
+HOUSE_0250,University,Townhouse,4,4,2498,0.0,18,True,True,False,358471,143.5,17,2025-07-16
+HOUSE_0251,Riverside,Condo,4,4,2616,0.0,40,True,True,False,300396,114.83,58,2025-06-05
+HOUSE_0252,Industrial,Condo,4,3,2395,0.0,13,True,False,True,190937,79.72,22,2025-07-11
+HOUSE_0253,Industrial,Townhouse,3,3,1975,0.0,46,False,False,False,120029,60.77,56,2025-06-07
+HOUSE_0254,Hillside,Duplex,4,3,2522,1.77,13,True,False,False,499298,197.98,24,2025-07-09
+HOUSE_0255,University,Condo,3,3,1856,0.0,5,True,False,False,218740,117.86,16,2025-07-17
+HOUSE_0256,Suburban,Condo,5,4,3115,0.0,31,True,True,False,437964,140.6,10,2025-07-23
+HOUSE_0257,Industrial,Duplex,3,3,2159,0.66,45,True,False,False,144175,66.78,69,2025-05-25
+HOUSE_0258,Industrial,Townhouse,3,3,1955,0.0,49,True,False,False,110262,56.4,26,2025-07-07
+HOUSE_0259,Suburban,Single Family,3,2,1608,1.54,7,True,False,True,211044,131.25,8,2025-07-25
+HOUSE_0260,Industrial,Townhouse,4,4,2089,0.0,33,True,False,False,184477,88.31,45,2025-06-18
+HOUSE_0261,Suburban,Single Family,4,4,2165,0.89,41,True,False,True,237257,109.59,6,2025-07-27
+HOUSE_0262,Suburban,Townhouse,1,1,1317,0.0,35,True,False,True,134133,101.85,21,2025-07-12
+HOUSE_0263,Downtown,Duplex,4,4,2299,1.2,39,True,False,False,283307,123.23,3,2025-07-30
+HOUSE_0264,Riverside,Duplex,4,4,2506,0.28,32,True,True,False,395480,157.81,5,2025-07-28
+HOUSE_0265,Industrial,Duplex,3,3,1781,1.34,38,True,False,True,101781,57.15,34,2025-06-29
+HOUSE_0266,University,Duplex,3,2,1892,1.25,26,True,False,True,195594,103.38,49,2025-06-14
+HOUSE_0267,Industrial,Duplex,4,4,2335,0.58,24,True,False,False,174455,74.71,92,2025-05-02
+HOUSE_0268,University,Townhouse,4,3,2409,0.0,13,True,False,True,346812,143.97,7,2025-07-26
+HOUSE_0269,Downtown,Duplex,4,3,2404,1.3,47,True,True,False,277637,115.49,47,2025-06-16
+HOUSE_0270,Industrial,Townhouse,3,3,2167,0.0,24,True,False,False,204201,94.23,16,2025-07-17
+HOUSE_0271,Riverside,Duplex,3,2,1626,0.88,40,False,False,True,188317,115.82,7,2025-07-26
+HOUSE_0272,Suburban,Duplex,4,3,2247,0.79,34,True,False,False,200468,89.22,30,2025-07-03
+HOUSE_0273,Hillside,Single Family,3,2,2142,1.72,47,True,False,True,303132,141.52,56,2025-06-07
+HOUSE_0274,Riverside,Townhouse,1,1,1429,0.0,35,True,False,True,173331,121.3,100,2025-04-24
+HOUSE_0275,University,Condo,3,3,2034,0.0,23,True,False,False,195645,96.19,24,2025-07-09
+HOUSE_0276,Hillside,Duplex,4,3,2969,1.31,33,True,False,True,524977,176.82,89,2025-05-05
+HOUSE_0277,Suburban,Townhouse,3,3,1753,0.0,40,True,False,False,193248,110.24,43,2025-06-20
+HOUSE_0278,Downtown,Condo,3,3,2133,0.0,38,True,False,True,320045,150.04,6,2025-07-27
+HOUSE_0279,Industrial,Condo,4,4,2812,0.0,22,True,False,False,267543,95.14,1,2025-08-01
+HOUSE_0280,Riverside,Duplex,4,4,2320,1.37,8,True,True,True,408848,176.23,2,2025-07-31
+HOUSE_0281,Industrial,Duplex,4,3,2375,0.79,18,True,True,False,224429,94.5,14,2025-07-19
+HOUSE_0282,Suburban,Townhouse,1,1,1586,0.0,39,True,False,False,126583,79.81,21,2025-07-12
+HOUSE_0283,University,Duplex,4,4,2821,1.25,18,True,False,False,310261,109.98,5,2025-07-28
+HOUSE_0284,Riverside,Duplex,4,4,2081,0.15,12,True,False,False,341387,164.05,65,2025-05-29
+HOUSE_0285,Riverside,Single Family,2,2,1230,0.23,2,True,False,False,226448,184.1,15,2025-07-18
+HOUSE_0286,Industrial,Townhouse,2,2,1997,0.0,10,True,False,False,203625,101.97,6,2025-07-27
+HOUSE_0287,Downtown,Duplex,5,5,2999,1.05,34,False,False,False,447366,149.17,40,2025-06-23
+HOUSE_0288,Riverside,Townhouse,4,3,2574,0.0,14,False,False,False,475215,184.62,219,2024-12-26
+HOUSE_0289,Industrial,Duplex,2,2,1633,1.33,38,False,False,False,100927,61.81,22,2025-07-11
+HOUSE_0290,Industrial,Single Family,3,3,1852,0.95,45,True,False,True,115354,62.29,9,2025-07-24
+HOUSE_0291,Suburban,Single Family,3,2,2280,1.63,38,True,False,False,260613,114.3,30,2025-07-03
+HOUSE_0292,Downtown,Single Family,4,4,2383,0.12,28,True,False,True,386955,162.38,28,2025-07-05
+HOUSE_0293,Industrial,Townhouse,3,2,2057,0.0,30,True,False,True,167627,81.49,1,2025-08-01
+HOUSE_0294,Suburban,Condo,2,2,1642,0.0,43,False,False,True,138888,84.59,3,2025-07-30
+HOUSE_0295,Industrial,Condo,4,4,2286,0.0,11,True,False,False,205716,89.99,34,2025-06-29
+HOUSE_0296,Downtown,Condo,5,5,2919,0.0,9,True,False,False,445479,152.61,81,2025-05-13
+HOUSE_0297,Riverside,Condo,4,4,2360,0.0,32,False,False,False,321768,136.34,2,2025-07-31
+HOUSE_0298,Downtown,Townhouse,4,4,2583,0.0,48,True,False,False,223660,86.59,47,2025-06-16
+HOUSE_0299,Suburban,Townhouse,3,2,1791,0.0,27,True,False,False,205836,114.93,14,2025-07-19
+HOUSE_0300,Downtown,Townhouse,4,4,2436,0.0,14,True,False,True,367572,150.89,51,2025-06-12
+HOUSE_0301,Downtown,Duplex,4,4,2184,0.66,6,True,False,False,439730,201.34,2,2025-07-31
+HOUSE_0302,University,Single Family,4,3,2304,2.0,21,False,False,False,230831,100.19,14,2025-07-19
+HOUSE_0303,Hillside,Duplex,2,1,1804,0.71,29,False,False,True,291759,161.73,29,2025-07-04
+HOUSE_0304,Suburban,Townhouse,3,3,1906,0.0,48,True,False,True,163521,85.79,14,2025-07-19
+HOUSE_0305,Hillside,Condo,3,2,2277,0.0,25,True,False,True,426043,187.11,26,2025-07-07
+HOUSE_0306,University,Single Family,5,5,2884,0.21,12,True,False,False,422672,146.56,49,2025-06-14
+HOUSE_0307,Riverside,Duplex,3,3,1749,0.16,25,True,False,True,219824,125.69,7,2025-07-26
+HOUSE_0308,Suburban,Condo,4,4,2151,0.0,19,True,False,True,281362,130.81,49,2025-06-14
+HOUSE_0309,Downtown,Duplex,3,3,1970,0.11,23,True,False,False,298366,151.45,24,2025-07-09
+HOUSE_0310,Downtown,Single Family,3,2,2222,0.51,10,False,False,False,420122,189.07,27,2025-07-06
+HOUSE_0311,University,Condo,3,3,2189,0.0,49,False,False,False,129588,59.2,118,2025-04-06
+HOUSE_0312,Industrial,Condo,4,4,2384,0.0,10,True,False,False,254005,106.55,6,2025-07-27
+HOUSE_0313,Hillside,Single Family,4,4,1968,0.34,7,True,True,True,374921,190.51,14,2025-07-19
+HOUSE_0314,Hillside,Townhouse,3,3,2096,0.0,42,True,False,False,288045,137.43,33,2025-06-30
+HOUSE_0315,Hillside,Duplex,4,3,2285,1.77,24,False,False,True,310564,135.91,31,2025-07-02
+HOUSE_0316,Riverside,Duplex,1,1,1190,0.4,16,True,False,True,195702,164.46,20,2025-07-13
+HOUSE_0317,Industrial,Condo,1,1,1199,0.0,10,True,False,True,126111,105.18,6,2025-07-27
+HOUSE_0318,Suburban,Single Family,4,3,2444,0.82,4,False,False,False,409537,167.57,12,2025-07-21
+HOUSE_0319,Downtown,Single Family,4,4,2509,0.23,16,True,False,False,433003,172.58,102,2025-04-22
+HOUSE_0320,Downtown,Duplex,3,3,2265,1.47,40,False,False,True,297226,131.23,16,2025-07-17
+HOUSE_0321,Riverside,Condo,4,4,2531,0.0,9,True,False,False,428305,169.22,17,2025-07-16
+HOUSE_0322,Downtown,Condo,4,3,2675,0.0,19,True,False,False,419639,156.87,55,2025-06-08
+HOUSE_0323,University,Duplex,4,3,2345,0.26,24,True,False,False,207856,88.64,1,2025-08-01
+HOUSE_0324,Hillside,Duplex,2,1,1951,1.6,3,True,False,False,372059,190.7,63,2025-05-31
+HOUSE_0325,Hillside,Duplex,3,3,1905,1.14,9,False,False,False,425200,223.2,25,2025-07-08
+HOUSE_0326,Hillside,Duplex,4,4,2320,1.32,23,True,False,False,353521,152.38,14,2025-07-19
+HOUSE_0327,Riverside,Condo,3,2,1628,0.0,33,False,False,True,221581,136.11,25,2025-07-08
+HOUSE_0328,University,Single Family,3,3,1946,0.71,28,True,False,False,171133,87.94,85,2025-05-09
+HOUSE_0329,Riverside,Single Family,5,5,2671,1.05,34,False,False,False,285870,107.03,82,2025-05-12
+HOUSE_0330,Hillside,Single Family,3,3,1994,0.12,21,True,False,True,373335,187.23,31,2025-07-02
+HOUSE_0331,Riverside,Duplex,2,1,1444,0.75,43,True,False,True,190135,131.67,8,2025-07-25
+HOUSE_0332,Suburban,Condo,4,4,2528,0.0,45,False,False,True,220279,87.14,87,2025-05-07
+HOUSE_0333,Downtown,Duplex,3,3,2218,0.62,35,True,False,False,345581,155.81,45,2025-06-18
+HOUSE_0334,Suburban,Single Family,4,4,1901,0.91,19,False,False,False,227712,119.79,1,2025-08-01
+HOUSE_0335,Hillside,Duplex,2,2,1380,0.89,38,True,False,False,191724,138.93,12,2025-07-21
+HOUSE_0336,Downtown,Condo,3,2,2121,0.0,1,False,False,True,377888,178.17,133,2025-03-22
+HOUSE_0337,Industrial,Single Family,3,3,2314,0.95,30,True,True,False,225796,97.58,19,2025-07-14
+HOUSE_0338,Suburban,Condo,2,1,1740,0.0,9,False,False,False,276564,158.95,69,2025-05-25
+HOUSE_0339,Industrial,Duplex,3,3,2470,0.4,48,True,False,False,129675,52.5,14,2025-07-19
+HOUSE_0340,University,Townhouse,4,4,2226,0.0,11,True,True,False,262182,117.78,40,2025-06-23
+HOUSE_0341,Downtown,Townhouse,3,3,1890,0.0,48,True,True,False,229236,121.29,4,2025-07-29
+HOUSE_0342,University,Duplex,4,4,2380,1.54,24,False,False,True,237598,99.83,55,2025-06-08
+HOUSE_0343,Downtown,Townhouse,2,2,1455,0.0,43,False,False,False,143431,98.58,21,2025-07-12
+HOUSE_0344,Downtown,Townhouse,4,4,2702,0.0,15,False,False,True,507548,187.84,24,2025-07-09
+HOUSE_0345,University,Condo,2,1,1313,0.0,29,True,False,False,110274,83.99,135,2025-03-20
+HOUSE_0346,Downtown,Condo,4,4,2323,0.0,36,True,True,True,292060,125.73,32,2025-07-01
+HOUSE_0347,Hillside,Townhouse,2,2,1788,0.0,6,True,True,True,377983,211.4,67,2025-05-27
+HOUSE_0348,Downtown,Condo,4,4,2829,0.0,36,True,False,True,457705,161.79,17,2025-07-16
+HOUSE_0349,Hillside,Single Family,4,4,2508,1.14,7,False,False,True,461150,183.87,32,2025-07-01
+HOUSE_0350,Suburban,Condo,2,2,1530,0.0,49,True,False,False,111905,73.14,5,2025-07-28
+HOUSE_0351,Hillside,Duplex,4,4,2705,0.81,16,False,False,True,526799,194.75,6,2025-07-27
+HOUSE_0352,University,Single Family,4,3,2553,0.35,34,False,False,False,256024,100.28,7,2025-07-26
+HOUSE_0353,Hillside,Single Family,3,3,2051,1.17,4,True,False,False,503895,245.68,21,2025-07-12
+HOUSE_0354,Industrial,Single Family,3,3,1936,1.22,44,False,True,False,136336,70.42,7,2025-07-26
+HOUSE_0355,Suburban,Townhouse,3,3,2092,0.0,39,True,False,True,198097,94.69,8,2025-07-25
+HOUSE_0356,Hillside,Duplex,1,1,1163,1.82,39,True,False,False,179791,154.59,14,2025-07-19
+HOUSE_0357,Suburban,Duplex,3,3,2040,0.83,26,True,False,False,217593,106.66,20,2025-07-13
+HOUSE_0358,University,Single Family,3,3,2051,1.23,29,False,False,False,195503,95.32,5,2025-07-28
+HOUSE_0359,Hillside,Duplex,2,1,1880,1.03,9,True,False,True,333036,177.15,9,2025-07-24
+HOUSE_0360,Suburban,Duplex,1,1,910,1.21,20,True,False,True,110001,120.88,34,2025-06-29
+HOUSE_0361,University,Duplex,5,5,2747,1.77,37,False,False,True,207391,75.5,1,2025-08-01
+HOUSE_0362,Hillside,Duplex,2,2,1591,0.59,42,True,False,False,242011,152.11,51,2025-06-12
+HOUSE_0363,Riverside,Duplex,4,4,2463,0.55,21,True,False,False,394100,160.01,4,2025-07-29
+HOUSE_0364,Industrial,Condo,3,2,1668,0.0,33,True,True,False,112988,67.74,101,2025-04-23
+HOUSE_0365,Industrial,Condo,4,4,2167,0.0,2,True,False,False,238336,109.98,61,2025-06-02
+HOUSE_0366,Hillside,Townhouse,1,1,1481,0.0,16,True,False,True,329953,222.79,26,2025-07-07
+HOUSE_0367,Downtown,Townhouse,4,3,2477,0.0,17,False,False,False,373864,150.93,27,2025-07-06
+HOUSE_0368,Riverside,Single Family,3,2,2437,1.9,47,True,False,False,205708,84.41,63,2025-05-31
+HOUSE_0369,Hillside,Single Family,1,1,1170,0.22,3,True,True,True,286028,244.47,12,2025-07-21
+HOUSE_0370,Industrial,Townhouse,3,3,1696,0.0,46,True,True,False,125841,74.2,4,2025-07-29
+HOUSE_0371,Suburban,Duplex,4,4,2607,0.58,6,True,False,False,443969,170.3,14,2025-07-19
+HOUSE_0372,Hillside,Duplex,4,3,2570,0.84,49,True,False,False,267004,103.89,7,2025-07-26
+HOUSE_0373,Industrial,Single Family,4,3,2444,1.55,39,True,False,False,181300,74.18,71,2025-05-23
+HOUSE_0374,Riverside,Single Family,5,5,2569,1.66,25,False,False,False,329625,128.31,31,2025-07-02
+HOUSE_0375,Suburban,Condo,3,3,1980,0.0,34,False,False,False,201657,101.85,7,2025-07-26
+HOUSE_0376,Riverside,Duplex,3,2,1963,0.79,38,True,False,False,195521,99.6,14,2025-07-19
+HOUSE_0377,Industrial,Single Family,4,4,2386,1.23,18,True,False,False,232111,97.28,21,2025-07-12
+HOUSE_0378,Riverside,Townhouse,3,3,2028,0.0,20,True,False,True,324522,160.02,36,2025-06-27
+HOUSE_0379,University,Duplex,4,4,2333,0.54,46,False,False,False,159048,68.17,124,2025-03-31
+HOUSE_0380,Industrial,Single Family,3,2,1776,1.64,23,False,False,False,115680,65.14,33,2025-06-30
+HOUSE_0381,Downtown,Townhouse,5,5,2831,0.0,1,True,False,False,667405,235.75,13,2025-07-20
+HOUSE_0382,Suburban,Duplex,2,2,1618,0.47,33,False,False,True,193890,119.83,55,2025-06-08
+HOUSE_0383,Downtown,Single Family,3,2,1927,1.86,32,True,False,True,299081,155.21,20,2025-07-13
+HOUSE_0384,Suburban,Duplex,3,3,1920,1.26,25,True,False,False,216655,112.84,164,2025-02-19
+HOUSE_0385,Suburban,Townhouse,3,3,1827,0.0,8,True,False,False,299013,163.66,118,2025-04-06
+HOUSE_0386,Downtown,Single Family,4,3,2257,0.95,12,True,False,True,382078,169.29,81,2025-05-13
+HOUSE_0387,Downtown,Duplex,4,4,2436,1.99,42,False,True,False,307591,126.27,58,2025-06-05
+HOUSE_0388,Industrial,Duplex,3,3,2123,1.16,7,True,False,True,195194,91.94,17,2025-07-16
+HOUSE_0389,Downtown,Single Family,3,3,2228,0.35,38,False,False,False,292709,131.38,17,2025-07-16
+HOUSE_0390,Downtown,Single Family,1,1,927,0.37,24,True,False,True,172529,186.12,1,2025-08-01
+HOUSE_0391,Downtown,Townhouse,4,4,2502,0.0,39,False,False,False,314154,125.56,2,2025-07-31
+HOUSE_0392,Downtown,Single Family,3,3,1833,0.84,37,True,True,True,286381,156.24,19,2025-07-14
+HOUSE_0393,Suburban,Single Family,3,3,2225,0.7,5,True,False,False,350670,157.6,15,2025-07-18
+HOUSE_0394,Riverside,Townhouse,4,3,2236,0.0,40,True,False,True,245121,109.62,56,2025-06-07
+HOUSE_0395,Suburban,Duplex,3,3,1719,1.6,5,True,False,False,288904,168.07,130,2025-03-25
+HOUSE_0396,Suburban,Condo,4,4,2581,0.0,36,False,False,True,287578,111.42,88,2025-05-06
+HOUSE_0397,Hillside,Townhouse,5,5,2606,0.0,33,True,False,False,405173,155.48,33,2025-06-30
+HOUSE_0398,University,Townhouse,4,4,2757,0.0,48,False,False,True,222997,80.88,29,2025-07-04
+HOUSE_0399,University,Single Family,3,2,2106,1.78,24,False,False,False,251570,119.45,8,2025-07-25
+HOUSE_0400,Riverside,Duplex,4,4,2109,0.66,46,False,True,False,230725,109.4,15,2025-07-18
