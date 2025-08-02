@@ -6,22 +6,22 @@ from pathlib import Path
 # Add backend to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from backend.services.rbac_service import (
-    RBACService, 
+from backend.services.rbac_service_db import (
+    DatabaseRBACService, 
     Permission, 
     Role, 
     User,
-    rbac_service
+    db_rbac_service
 )
 from backend.core.exceptions import SecurityError
 
 
 class TestRBACService:
-    """Test suite for RBACService."""
+    """Test suite for DatabaseRBACService."""
     
     def setup_method(self):
         """Set up test environment."""
-        self.rbac = RBACService()
+        self.rbac = DatabaseRBACService()
     
     def test_create_user(self):
         """Test user creation."""

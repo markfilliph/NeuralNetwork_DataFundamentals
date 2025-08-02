@@ -36,9 +36,16 @@ class Settings:
         self.REDIS_URL: Optional[str] = os.getenv("REDIS_URL")
         
         # Security
-        self.SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+        self.SECRET_KEY: str = self._get_required_env("SECRET_KEY")
         self.API_KEY_EXPIRE_MINUTES: int = 60
-        self.ENCRYPTION_KEY: Optional[str] = os.getenv("ENCRYPTION_KEY")
+        self.ENCRYPTION_KEY: str = self._get_required_env("ENCRYPTION_KEY")
+    
+    def _get_required_env(self, key: str) -> str:
+        """Get required environment variable or raise error."""
+        value = os.getenv(key)
+        if not value:
+            raise ValueError(f"Required environment variable {key} is not set")
+        return value
 
 
 settings = Settings()

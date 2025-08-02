@@ -19,7 +19,7 @@ if not os.getenv("ENCRYPTION_KEY"):
     os.environ["ENCRYPTION_KEY"] = key
     print(f"🔑 Generated development encryption key: {key}")
 
-from backend.api.routes import app
+from backend.api.main import app
 from backend.core.logging import audit_logger, EventType
 
 # Log application startup
