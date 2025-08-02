@@ -25,6 +25,7 @@ class Permission(Enum):
     # Model permissions
     VIEW_MODELS = "view_models"
     TRAIN_MODELS = "train_models"
+    USE_MODELS = "use_models"
     DELETE_MODELS = "delete_models"
     
     # System permissions
@@ -85,6 +86,7 @@ class DatabaseRBACService:
             Permission.EXPORT_DATA,
             Permission.VIEW_MODELS,
             Permission.TRAIN_MODELS,
+            Permission.USE_MODELS,
         },
         Role.ADMIN: {
             Permission.READ_DATA,
@@ -93,6 +95,7 @@ class DatabaseRBACService:
             Permission.EXPORT_DATA,
             Permission.VIEW_MODELS,
             Permission.TRAIN_MODELS,
+            Permission.USE_MODELS,
             Permission.DELETE_MODELS,
             Permission.MANAGE_USERS,
             Permission.VIEW_AUDIT_LOGS,

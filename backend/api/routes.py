@@ -1,10 +1,11 @@
 """FastAPI routes for the data analysis platform."""
 
 import os
+import json
 import tempfile
 import uuid
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Union
 from datetime import datetime, timedelta
 
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, status
@@ -15,6 +16,9 @@ from pydantic import BaseModel, EmailStr
 from backend.services.rbac_service_db import db_rbac_service, Role, Permission, User
 from backend.services.auth_service import AuthenticationService, AuthenticationError
 from backend.services.encryption_service import encryption_service
+from backend.services.data_service import data_service, DataAnalysis
+from backend.services.model_service import model_service, ModelTrainingConfig, ModelInfo
+from backend.services.export_service import export_service, ExportInfo
 from backend.utils.file_handlers import SecureFileHandler
 from backend.utils.sanitizers import DataSanitizer
 from backend.api.middleware import require_permission, require_role, rate_limiter
@@ -73,6 +77,59 @@ class ErrorResponse(BaseModel):
     error: str
     message: str
     details: Optional[Dict] = None
+
+# Data Analysis Request/Response Models
+class DataAnalysisRequest(BaseModel):
+    include_correlation: bool = True
+    detect_outliers: bool = True
+
+class DataSampleRequest(BaseModel):
+    n_rows: int = 100
+    random: bool = False
+
+class DataCleaningRequest(BaseModel):
+    remove_duplicates: bool = False
+    missing_values_strategy: str = "none"  # 'none', 'drop_rows', 'drop_columns', 'fill_numeric'
+    missing_threshold: float = 0.5
+    fill_method: str = "mean"  # 'mean', 'median', 'mode'
+    remove_outliers: bool = False
+
+# Model Training Request/Response Models
+class ModelTrainingRequest(BaseModel):
+    dataset_id: str
+    target_column: str
+    feature_columns: Optional[List[str]] = None
+    model_type: str = "linear_regression"
+    test_size: float = 0.2
+    random_state: int = 42
+    scaling_method: Optional[str] = None
+    feature_selection: Optional[str] = None
+    feature_selection_k: int = 10
+    cross_validation: bool = True
+    cv_folds: int = 5
+    hyperparameter_tuning: bool = False
+    regularization_alpha: Optional[float] = None
+
+class PredictionRequest(BaseModel):
+    input_data: Union[Dict[str, Any], List[Dict[str, Any]]]
+
+# Export Request Models
+class ExportDatasetRequest(BaseModel):
+    format: str = "csv"  # 'csv', 'excel', 'json', 'parquet'
+    include_metadata: bool = True
+    custom_filename: Optional[str] = None
+
+class ExportAnalysisRequest(BaseModel):
+    format: str = "json"  # 'json', 'excel'
+    custom_filename: Optional[str] = None
+
+class ExportModelRequest(BaseModel):
+    format: str = "json"  # 'json', 'excel'
+    custom_filename: Optional[str] = None
+
+class ExportPredictionsRequest(BaseModel):
+    format: str = "csv"  # 'csv', 'excel', 'json'
+    custom_filename: Optional[str] = None
 
 # Dependency to get current user from token
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> User:
@@ -336,8 +393,9 @@ async def upload_dataset(
             
             final_path = storage_dir / f"{dataset_id}{tmp_path.suffix}"
             
-            # Encrypt file if requested
+            # Encrypt file if requested  
             if encrypt:
+                # Keep original extension, just add .encrypted
                 encrypted_path = encryption_service.encrypt_file(
                     tmp_path,
                     final_path.with_suffix(tmp_path.suffix + '.encrypted'),
@@ -346,6 +404,26 @@ async def upload_dataset(
                 final_path = encrypted_path
             else:
                 tmp_path.rename(final_path)
+            
+            # Save dataset info to database
+            from backend.models.database import db_manager
+            query = '''
+                INSERT INTO datasets 
+                (dataset_id, name, description, file_path, file_size, file_hash, owner_id, is_encrypted, metadata)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            '''
+            
+            metadata = {
+                "original_filename": file.filename,
+                "uploaded_at": datetime.utcnow().isoformat(),
+                "file_type": tmp_path.suffix
+            }
+            
+            db_manager.execute_update(
+                query,
+                (dataset_id, name or file.filename, description or "", str(final_path), 
+                 len(content), file_hash, current_user.user_id, encrypt, json.dumps(metadata))
+            )
             
             # Log upload event
             audit_logger.log_data_access(
@@ -462,6 +540,580 @@ async def get_security_summary(
     
     summary = audit_logger.get_security_summary(hours=hours)
     return summary
+
+# Data Analysis Endpoints
+@app.get("/data/datasets", tags=["Data Analysis"])
+async def list_datasets(
+    current_user: User = Depends(get_current_user),
+    limit: int = 50,
+    offset: int = 0
+):
+    """List datasets owned by or accessible to the user."""
+    # Get user's datasets
+    query = '''
+        SELECT dataset_id, name, file_size, is_encrypted, created_at, updated_at, metadata
+        FROM datasets 
+        WHERE owner_id = ? 
+        ORDER BY created_at DESC 
+        LIMIT ? OFFSET ?
+    '''
+    
+    from backend.models.database import db_manager
+    results = db_manager.execute_query(query, (current_user.user_id, limit, offset))
+    
+    datasets = []
+    for row in results:
+        datasets.append({
+            "dataset_id": row["dataset_id"],
+            "name": row["name"],
+            "file_size": row["file_size"],
+            "is_encrypted": bool(row["is_encrypted"]),
+            "created_at": row["created_at"],
+            "updated_at": row["updated_at"],
+            "metadata": json.loads(row["metadata"] or '{}')
+        })
+    
+    return {
+        "datasets": datasets,
+        "total": len(datasets),
+        "limit": limit,
+        "offset": offset
+    }
+
+@app.get("/data/{dataset_id}/analyze", tags=["Data Analysis"])
+async def analyze_dataset(
+    dataset_id: str,
+    request: DataAnalysisRequest = Depends(),
+    current_user: User = Depends(get_current_user)
+):
+    """Perform comprehensive exploratory data analysis on a dataset."""
+    if not db_rbac_service.has_permission(current_user, Permission.READ_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to analyze data"
+        )
+    
+    try:
+        analysis = await data_service.analyze_dataset(
+            dataset_id=dataset_id,
+            user_id=current_user.user_id,
+            include_correlation=request.include_correlation,
+            detect_outliers=request.detect_outliers
+        )
+        
+        # Convert dataclass to dictionary for JSON response
+        return {
+            "dataset_id": analysis.dataset_id,
+            "shape": analysis.shape,
+            "columns": analysis.columns,
+            "data_types": analysis.data_types,
+            "missing_values": analysis.missing_values,
+            "missing_percentages": analysis.missing_percentages,
+            "numeric_summary": analysis.numeric_summary,
+            "categorical_summary": analysis.categorical_summary,
+            "correlation_matrix": analysis.correlation_matrix,
+            "outliers": analysis.outliers,
+            "duplicates": analysis.duplicates,
+            "memory_usage": analysis.memory_usage,
+            "analysis_timestamp": analysis.analysis_timestamp
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Analysis failed: {str(e)}"
+        )
+
+@app.get("/data/{dataset_id}/sample", tags=["Data Analysis"])
+async def get_dataset_sample(
+    dataset_id: str,
+    request: DataSampleRequest = Depends(),
+    current_user: User = Depends(get_current_user)
+):
+    """Get a sample of the dataset for preview."""
+    if not db_rbac_service.has_permission(current_user, Permission.READ_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to read data"
+        )
+    
+    try:
+        sample = await data_service.get_data_sample(
+            dataset_id=dataset_id,
+            user_id=current_user.user_id,
+            n_rows=request.n_rows,
+            random=request.random
+        )
+        
+        return sample
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to get data sample: {str(e)}"
+        )
+
+@app.post("/data/{dataset_id}/clean", tags=["Data Analysis"])
+async def clean_dataset(
+    dataset_id: str,
+    request: DataCleaningRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Clean dataset based on specified options."""
+    if not db_rbac_service.has_permission(current_user, Permission.UPLOAD_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to clean data"
+        )
+    
+    try:
+        cleaning_options = {
+            "remove_duplicates": request.remove_duplicates,
+            "missing_values_strategy": request.missing_values_strategy,
+            "missing_threshold": request.missing_threshold,
+            "fill_method": request.fill_method,
+            "remove_outliers": request.remove_outliers
+        }
+        
+        results = await data_service.clean_dataset(
+            dataset_id=dataset_id,
+            user_id=current_user.user_id,
+            cleaning_options=cleaning_options
+        )
+        
+        return results
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Data cleaning failed: {str(e)}"
+        )
+
+# Model Training and Management Endpoints
+@app.post("/models/train", tags=["Machine Learning"])
+async def train_model(
+    request: ModelTrainingRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Train a machine learning model."""
+    if not db_rbac_service.has_permission(current_user, Permission.TRAIN_MODELS):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to train models"
+        )
+    
+    try:
+        # Create training config
+        config = ModelTrainingConfig(
+            model_type=request.model_type,
+            test_size=request.test_size,
+            random_state=request.random_state,
+            scaling_method=request.scaling_method,
+            feature_selection=request.feature_selection,
+            feature_selection_k=request.feature_selection_k,
+            cross_validation=request.cross_validation,
+            cv_folds=request.cv_folds,
+            hyperparameter_tuning=request.hyperparameter_tuning,
+            regularization_alpha=request.regularization_alpha
+        )
+        
+        model_info = await model_service.train_model(
+            dataset_id=request.dataset_id,
+            target_column=request.target_column,
+            feature_columns=request.feature_columns,
+            config=config,
+            user_id=current_user.user_id
+        )
+        
+        # Convert dataclass to dict for JSON response
+        return {
+            "model_id": model_info.model_id,
+            "name": model_info.name,
+            "model_type": model_info.model_type,
+            "dataset_id": model_info.dataset_id,
+            "target_column": model_info.target_column,
+            "feature_columns": model_info.feature_columns,
+            "performance": {
+                "r2_score": model_info.performance.r2_score,
+                "adjusted_r2": model_info.performance.adjusted_r2,
+                "mse": model_info.performance.mse,
+                "mae": model_info.performance.mae,
+                "rmse": model_info.performance.rmse,
+                "mape": model_info.performance.mape,
+                "explained_variance": model_info.performance.explained_variance,
+                "cv_scores": model_info.performance.cv_scores,
+                "cv_mean": model_info.performance.cv_mean,
+                "cv_std": model_info.performance.cv_std
+            },
+            "feature_importance": model_info.feature_importance,
+            "model_size": model_info.model_size,
+            "training_time": model_info.training_time,
+            "created_at": model_info.created_at,
+            "status": model_info.status
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Model training failed: {str(e)}"
+        )
+
+@app.get("/models", tags=["Machine Learning"])
+async def list_models(
+    current_user: User = Depends(get_current_user),
+    limit: int = 50,
+    offset: int = 0
+):
+    """List models owned by the user."""
+    try:
+        models = await model_service.list_models(
+            user_id=current_user.user_id,
+            limit=limit,
+            offset=offset
+        )
+        
+        # Convert to dict for JSON response
+        models_dict = []
+        for model in models:
+            models_dict.append({
+                "model_id": model.model_id,
+                "name": model.name,
+                "model_type": model.model_type,
+                "dataset_id": model.dataset_id,
+                "target_column": model.target_column,
+                "feature_columns": model.feature_columns,
+                "performance": {
+                    "r2_score": model.performance.r2_score,
+                    "mse": model.performance.mse,
+                    "mae": model.performance.mae
+                },
+                "created_at": model.created_at,
+                "status": model.status
+            })
+        
+        return {
+            "models": models_dict,
+            "total": len(models_dict),
+            "limit": limit,
+            "offset": offset
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to list models: {str(e)}"
+        )
+
+@app.get("/models/{model_id}", tags=["Machine Learning"])
+async def get_model_info(
+    model_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get detailed information about a specific model."""
+    try:
+        model_info = await model_service.get_model_info(model_id, current_user.user_id)
+        
+        if not model_info:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Model not found"
+            )
+        
+        return {
+            "model_id": model_info.model_id,
+            "name": model_info.name,
+            "model_type": model_info.model_type,
+            "dataset_id": model_info.dataset_id,
+            "target_column": model_info.target_column,
+            "feature_columns": model_info.feature_columns,
+            "training_config": {
+                "model_type": model_info.training_config.model_type,
+                "test_size": model_info.training_config.test_size,
+                "scaling_method": model_info.training_config.scaling_method,
+                "feature_selection": model_info.training_config.feature_selection,
+                "cross_validation": model_info.training_config.cross_validation
+            },
+            "performance": {
+                "r2_score": model_info.performance.r2_score,
+                "adjusted_r2": model_info.performance.adjusted_r2,
+                "mse": model_info.performance.mse,
+                "mae": model_info.performance.mae,
+                "rmse": model_info.performance.rmse,
+                "mape": model_info.performance.mape,
+                "explained_variance": model_info.performance.explained_variance,
+                "cv_scores": model_info.performance.cv_scores,
+                "cv_mean": model_info.performance.cv_mean,
+                "cv_std": model_info.performance.cv_std
+            },
+            "feature_importance": model_info.feature_importance,
+            "model_size": model_info.model_size,
+            "training_time": model_info.training_time,
+            "created_at": model_info.created_at,
+            "status": model_info.status,
+            "metadata": model_info.metadata
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to get model info: {str(e)}"
+        )
+
+@app.post("/models/{model_id}/predict", tags=["Machine Learning"])
+async def predict(
+    model_id: str,
+    request: PredictionRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Make predictions using a trained model."""
+    if not db_rbac_service.has_permission(current_user, Permission.USE_MODELS):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to use models"
+        )
+    
+    try:
+        results = await model_service.predict(
+            model_id=model_id,
+            input_data=request.input_data,
+            user_id=current_user.user_id
+        )
+        
+        return results
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Prediction failed: {str(e)}"
+        )
+
+@app.delete("/models/{model_id}", tags=["Machine Learning"])
+async def delete_model(
+    model_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete a model and its files."""
+    if not db_rbac_service.has_permission(current_user, Permission.DELETE_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to delete models"
+        )
+    
+    try:
+        success = await model_service.delete_model(model_id, current_user.user_id)
+        
+        if success:
+            return {"message": "Model deleted successfully", "model_id": model_id}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Model not found or could not be deleted"
+            )
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to delete model: {str(e)}"
+        )
+
+# Export Endpoints
+@app.post("/data/{dataset_id}/export", tags=["Export"])
+async def export_dataset(
+    dataset_id: str,
+    request: ExportDatasetRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Export a dataset in the specified format."""
+    if not db_rbac_service.has_permission(current_user, Permission.EXPORT_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to export data"
+        )
+    
+    try:
+        export_info = await export_service.export_dataset(
+            dataset_id=dataset_id,
+            user_id=current_user.user_id,
+            format=request.format,
+            include_metadata=request.include_metadata,
+            custom_filename=request.custom_filename
+        )
+        
+        return {
+            "export_id": export_info.export_id,
+            "filename": export_info.filename,
+            "format": export_info.format,
+            "file_size": export_info.file_size,
+            "created_at": export_info.created_at,
+            "status": export_info.status,
+            "download_url": f"/exports/{export_info.export_id}/download"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Export failed: {str(e)}"
+        )
+
+@app.post("/data/{dataset_id}/export-analysis", tags=["Export"])
+async def export_analysis(
+    dataset_id: str,
+    request: ExportAnalysisRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Export data analysis results."""
+    if not db_rbac_service.has_permission(current_user, Permission.EXPORT_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to export data"
+        )
+    
+    try:
+        export_info = await export_service.export_analysis(
+            dataset_id=dataset_id,
+            user_id=current_user.user_id,
+            format=request.format,
+            custom_filename=request.custom_filename
+        )
+        
+        return {
+            "export_id": export_info.export_id,
+            "filename": export_info.filename,
+            "format": export_info.format,
+            "file_size": export_info.file_size,
+            "created_at": export_info.created_at,
+            "status": export_info.status,
+            "download_url": f"/exports/{export_info.export_id}/download"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Analysis export failed: {str(e)}"
+        )
+
+@app.post("/models/{model_id}/export", tags=["Export"])
+async def export_model_results(
+    model_id: str,
+    request: ExportModelRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Export model results and performance metrics."""
+    if not db_rbac_service.has_permission(current_user, Permission.EXPORT_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to export data"
+        )
+    
+    try:
+        export_info = await export_service.export_model_results(
+            model_id=model_id,
+            user_id=current_user.user_id,
+            format=request.format,
+            custom_filename=request.custom_filename
+        )
+        
+        return {
+            "export_id": export_info.export_id,
+            "filename": export_info.filename,
+            "format": export_info.format,
+            "file_size": export_info.file_size,
+            "created_at": export_info.created_at,
+            "status": export_info.status,
+            "download_url": f"/exports/{export_info.export_id}/download"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Model export failed: {str(e)}"
+        )
+
+@app.post("/predictions/export", tags=["Export"])
+async def export_predictions(
+    predictions: Dict[str, Any],
+    request: ExportPredictionsRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Export prediction results."""
+    if not db_rbac_service.has_permission(current_user, Permission.EXPORT_DATA):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions to export data"
+        )
+    
+    try:
+        export_info = await export_service.export_predictions(
+            predictions=predictions,
+            user_id=current_user.user_id,
+            format=request.format,
+            custom_filename=request.custom_filename
+        )
+        
+        return {
+            "export_id": export_info.export_id,
+            "filename": export_info.filename,
+            "format": export_info.format,
+            "file_size": export_info.file_size,
+            "created_at": export_info.created_at,
+            "status": export_info.status,
+            "download_url": f"/exports/{export_info.export_id}/download"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Predictions export failed: {str(e)}"
+        )
+
+@app.get("/exports/{export_id}/info", tags=["Export"])
+async def get_export_info(
+    export_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get information about an export."""
+    try:
+        export_info = await export_service.get_export_info(export_id, current_user.user_id)
+        
+        if not export_info:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Export not found"
+            )
+        
+        return {
+            "export_id": export_info.export_id,
+            "export_type": export_info.export_type,
+            "format": export_info.format,
+            "resource_id": export_info.resource_id,
+            "filename": export_info.filename,
+            "file_size": export_info.file_size,
+            "created_at": export_info.created_at,
+            "status": export_info.status,
+            "metadata": export_info.metadata,
+            "download_url": f"/exports/{export_info.export_id}/download"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to get export info: {str(e)}"
+        )
+
+@app.get("/exports/{export_id}/download", tags=["Export"])
+async def download_export(
+    export_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Download an exported file."""
+    try:
+        return await export_service.download_export(export_id, current_user.user_id)
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Download failed: {str(e)}"
+        )
 
 # Error handlers
 @app.exception_handler(AuthenticationError)

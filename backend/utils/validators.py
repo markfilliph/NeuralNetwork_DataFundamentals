@@ -106,3 +106,60 @@ class BasicValidator:
             clean_name = 'column_0'
         
         return clean_name
+
+
+class DataValidator:
+    """Data validation utilities for ML workflows."""
+    
+    @staticmethod
+    def validate_dataset_shape(df_shape: tuple, min_samples: int = 10, max_features: int = 1000) -> bool:
+        """Validate dataset shape constraints.
+        
+        Args:
+            df_shape: DataFrame shape (rows, columns)
+            min_samples: Minimum required samples
+            max_features: Maximum allowed features
+            
+        Returns:
+            True if shape is valid
+        """
+        rows, cols = df_shape
+        return rows >= min_samples and cols <= max_features
+    
+    @staticmethod
+    def validate_column_exists(df_columns: List[str], column_name: str) -> bool:
+        """Validate that a column exists in the dataset.
+        
+        Args:
+            df_columns: List of column names
+            column_name: Column name to check
+            
+        Returns:
+            True if column exists
+        """
+        return column_name in df_columns
+    
+    @staticmethod
+    def validate_numeric_column(series_dtype: str) -> bool:
+        """Validate that a column is numeric.
+        
+        Args:
+            series_dtype: Pandas dtype string
+            
+        Returns:
+            True if numeric
+        """
+        return 'int' in str(series_dtype) or 'float' in str(series_dtype)
+    
+    @staticmethod
+    def validate_no_all_null(series_null_count: int, series_length: int) -> bool:
+        """Validate that a column is not entirely null.
+        
+        Args:
+            series_null_count: Number of null values
+            series_length: Total length of series
+            
+        Returns:
+            True if not all null
+        """
+        return series_null_count < series_length

@@ -6,6 +6,11 @@ class SecurityError(Exception):
     pass
 
 
+class ValidationError(Exception):
+    """Raised when data validation fails."""
+    pass
+
+
 class FileValidationError(SecurityError):
     """Raised when file validation fails."""
     pass

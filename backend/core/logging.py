@@ -38,6 +38,7 @@ class EventType(Enum):
     # Data events
     DATA_UPLOADED = "data_uploaded"
     DATA_ACCESSED = "data_accessed"
+    DATA_ACCESS = "data_access"  # Alias for DATA_ACCESSED
     DATA_MODIFIED = "data_modified"
     DATA_DELETED = "data_deleted"
     DATA_EXPORTED = "data_exported"
