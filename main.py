@@ -40,9 +40,9 @@ if __name__ == "__main__":
     print(f"🔐 Health Check: http://localhost:8000/health")
     
     uvicorn.run(
-        app, 
+        "backend.api.main:app", 
         host="0.0.0.0", 
         port=8000,
-        reload=True,
+        reload=False,
         log_level="info"
     )
