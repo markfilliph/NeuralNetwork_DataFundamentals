@@ -62,17 +62,37 @@ class RateLimiter:
 class SecurityMiddleware:
     """Basic security middleware."""
     
-    def __init__(self):
+    def __init__(self, app):
         """Initialize security middleware."""
-        pass
+        self.app = app
+    
+    async def __call__(self, scope, receive, send):
+        """ASGI middleware call."""
+        # Add basic security headers
+        if scope["type"] == "http":
+            # Process request through the app
+            return await self.app(scope, receive, send)
+        else:
+            return await self.app(scope, receive, send)
 
 
 class LoggingMiddleware:
     """Request logging middleware."""
     
-    def __init__(self):
+    def __init__(self, app):
         """Initialize logging middleware."""
-        pass
+        self.app = app
+    
+    async def __call__(self, scope, receive, send):
+        """ASGI middleware call."""
+        # Log request details
+        if scope["type"] == "http":
+            # Basic request logging
+            method = scope.get("method", "")
+            path = scope.get("path", "")
+            print(f"Request: {method} {path}")
+        
+        return await self.app(scope, receive, send)
 
 
 def require_permission(permission: Permission):

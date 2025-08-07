@@ -76,11 +76,11 @@ async def register(request: RegisterRequest):
         )
         
         # Generate token
-        token_data = auth_service.create_access_token(
-            user_id=user.user_id,
-            username=user.username,
-            role=user.role.value
-        )
+        token_data = auth_service.create_access_token({
+            "user_id": user.user_id,
+            "username": user.username,
+            "role": user.role.value
+        })
         
         # Log successful registration
         audit_logger.log_event(
@@ -131,11 +131,11 @@ async def login(request: LoginRequest):
             )
         
         # Generate token
-        token_data = auth_service.create_access_token(
-            user_id=user.user_id,
-            username=user.username,
-            role=user.role.value
-        )
+        token_data = auth_service.create_access_token({
+            "user_id": user.user_id,
+            "username": user.username,
+            "role": user.role.value
+        })
         
         return TokenResponse(
             access_token=token_data["access_token"],
