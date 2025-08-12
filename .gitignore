@@ -97,3 +97,6 @@ frontend/node_modules/
 # Runtime logs
 jupyter_server.log
 server.log
+
+# Claude Code settings
+.claude/
