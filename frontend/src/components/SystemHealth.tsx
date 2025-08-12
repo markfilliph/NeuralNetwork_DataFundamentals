@@ -17,7 +17,9 @@ interface SystemHealthProps {
 }
 
 export default function SystemHealth({ healthStatus }: SystemHealthProps) {
-  const isHealthy = healthStatus?.status === 'healthy';
+  // Handle case where healthStatus might be an error object
+  const safeHealthStatus = healthStatus && typeof healthStatus === 'object' && 'status' in healthStatus ? healthStatus : null;
+  const isHealthy = safeHealthStatus?.status === 'healthy';
   
   return (
     <Card>
@@ -33,19 +35,19 @@ export default function SystemHealth({ healthStatus }: SystemHealthProps) {
             <ErrorOutlined color="error" />
           )}
           <Chip
-            label={healthStatus?.status || 'Unknown'}
+            label={safeHealthStatus?.status || 'Unknown'}
             color={isHealthy ? 'success' : 'error'}
             size="small"
           />
         </Box>
 
-        {healthStatus && (
+        {safeHealthStatus && (
           <Box>
             <Typography variant="body2" color="text.secondary" gutterBottom>
-              Service: {healthStatus.service}
+              Service: {safeHealthStatus.service || 'Unknown'}
             </Typography>
             <Typography variant="body2" color="text.secondary" gutterBottom>
-              Version: {healthStatus.version}
+              Version: {safeHealthStatus.version || 'Unknown'}
             </Typography>
           </Box>
         )}

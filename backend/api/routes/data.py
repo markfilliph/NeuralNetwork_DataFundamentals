@@ -82,7 +82,8 @@ async def upload_file(
         
         try:
             # Validate and sanitize file
-            validated_path = file_handler.validate_file(temp_file_path, file.filename)
+            SecureFileHandler.validate_file(Path(temp_file_path))
+            validated_path = temp_file_path
             sanitized_path = DataSanitizer.sanitize_file(validated_path)
             
             # Store file securely

@@ -321,6 +321,27 @@ class UserRepository(CachedRepositoryMixin):
         
         return None
     
+    def get_user_by_email(self, email: str) -> Optional[Dict]:
+        """Get user by email with optimized query.
+        
+        Args:
+            email: User email address
+            
+        Returns:
+            User dictionary or None if not found
+        """
+        results = self.db.execute_query(
+            'SELECT * FROM users WHERE email = ? AND is_active = 1 LIMIT 1',
+            (email,)
+        )
+        
+        if results:
+            user = results[0]
+            user['metadata'] = json.loads(user['metadata'] or '{}')
+            return user
+        
+        return None
+    
     def update_user(self, user_id: str, **kwargs) -> bool:
         """Update user fields.
         

@@ -7,7 +7,7 @@ from pathlib import Path
 # Add backend to Python path
 sys.path.insert(0, str(Path(__file__).parent))
 
-# Set environment variables if not already set
+# Set environment variables if not already set - MUST BE DONE BEFORE IMPORTING BACKEND
 if not os.getenv("SECRET_KEY"):
     os.environ["SECRET_KEY"] = "development-secret-key-change-in-production"
 
@@ -19,6 +19,7 @@ if not os.getenv("ENCRYPTION_KEY"):
     os.environ["ENCRYPTION_KEY"] = key
     print(f"🔑 Generated development encryption key: {key}")
 
+# Now safe to import backend modules
 from backend.api.main import app
 from backend.core.logging import audit_logger, EventType
 

@@ -38,7 +38,7 @@ class AuthenticationService:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     
     @classmethod
-    def create_access_token(cls, data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
+    def create_access_token(cls, data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> Dict[str, Any]:
         """Create a JWT access token using jose library.
         
         Args:
@@ -46,7 +46,7 @@ class AuthenticationService:
             expires_delta: Optional custom expiration time
             
         Returns:
-            JWT token string
+            Dictionary with access_token and expires_in
         """
         to_encode = data.copy()
         
@@ -57,7 +57,12 @@ class AuthenticationService:
         
         to_encode.update({"exp": expire, "iat": datetime.utcnow()})
         
-        return jwt.encode(to_encode, cls.SECRET_KEY, algorithm=cls.ALGORITHM)
+        token = jwt.encode(to_encode, cls.SECRET_KEY, algorithm=cls.ALGORITHM)
+        
+        return {
+            "access_token": token,
+            "expires_in": cls.ACCESS_TOKEN_EXPIRE_MINUTES * 60  # convert to seconds
+        }
     
     @classmethod
     def verify_token(cls, token: str) -> Dict[str, Any]:

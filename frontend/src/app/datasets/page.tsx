@@ -31,10 +31,12 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { apiClient, Dataset } from '@/lib/api-client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function DatasetsPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { user, isAuthenticated } = useAuth();
   const [deleteDialog, setDeleteDialog] = useState<Dataset | null>(null);
 
   // Fetch datasets
@@ -46,6 +48,8 @@ export default function DatasetsPage() {
   } = useQuery({
     queryKey: ['datasets'],
     queryFn: () => apiClient.getDatasets(1, 50),
+    enabled: isAuthenticated, // Only fetch if authenticated
+    retry: false,
   });
 
   // Delete mutation
@@ -58,6 +62,26 @@ export default function DatasetsPage() {
   });
 
   const datasets = datasetsResponse?.items || [];
+
+  // If not authenticated, redirect to login
+  if (!isAuthenticated) {
+    return (
+      <Box textAlign="center" py={8}>
+        <Typography variant="h5" gutterBottom>
+          Authentication Required
+        </Typography>
+        <Typography variant="body1" color="text.secondary" mb={3}>
+          Please log in to view your datasets.
+        </Typography>
+        <Button 
+          variant="contained" 
+          onClick={() => router.push('/login')}
+        >
+          Go to Login
+        </Button>
+      </Box>
+    );
+  }
 
   const handleDelete = (dataset: Dataset) => {
     setDeleteDialog(dataset);
@@ -117,7 +141,7 @@ export default function DatasetsPage() {
       {/* Error */}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          Failed to load datasets. Please try again.
+          Failed to load datasets: {typeof error === 'string' ? error : error.message || 'Please try again.'}
         </Alert>
       )}
 

@@ -216,8 +216,12 @@ class DatabaseRBACService:
             User object if authentication successful, None otherwise
         """
         try:
-            # Get user from database
+            # Get user from database - try username first, then email
             db_user = user_repository.get_user_by_username(username)
+            if not db_user and '@' in username:
+                # If username contains @ and user not found, try as email
+                db_user = user_repository.get_user_by_email(username)
+            
             if not db_user:
                 audit_logger.log_authentication_event(
                     success=False,

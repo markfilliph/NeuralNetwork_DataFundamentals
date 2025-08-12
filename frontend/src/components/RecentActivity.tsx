@@ -14,24 +14,28 @@ interface RecentActivityProps {
   models: Model[];
 }
 
-export default function RecentActivity({ datasets, models }: RecentActivityProps) {
+export default function RecentActivity({ datasets = [], models = [] }: RecentActivityProps) {
+  // Ensure datasets and models are arrays and filter out invalid items
+  const validDatasets = Array.isArray(datasets) ? datasets.filter(d => d && d.id && d.created_at) : [];
+  const validModels = Array.isArray(models) ? models.filter(m => m && m.id && m.created_at) : [];
+
   // Combine and sort by creation date
   const activities = [
-    ...datasets.map(d => ({
+    ...validDatasets.map(d => ({
       type: 'dataset',
       id: d.id,
-      title: d.filename,
+      title: d.filename || 'Unknown dataset',
       subtitle: `Dataset uploaded`,
       time: new Date(d.created_at),
-      status: d.status
+      status: d.status || 'unknown'
     })),
-    ...models.map(m => ({
+    ...validModels.map(m => ({
       type: 'model',
       id: m.id,
-      title: `Model for ${m.target_column}`,
+      title: `Model for ${m.target_column || 'unknown target'}`,
       subtitle: `R² Score: ${m.metrics?.r2_score?.toFixed(3) || 'N/A'}`,
       time: new Date(m.created_at),
-      status: m.status
+      status: m.status || 'unknown'
     }))
   ].sort((a, b) => b.time.getTime() - a.time.getTime()).slice(0, 5);
 

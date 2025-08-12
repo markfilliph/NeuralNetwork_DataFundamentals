@@ -29,29 +29,55 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { connectionStatus, lastActivity } = useWebSocket();
 
-  // Fetch dashboard data
-  const { data: datasets } = useQuery({
+  // Fetch dashboard data with error handling
+  const { data: datasets, error: datasetsError } = useQuery({
     queryKey: ['datasets', { page: 1, per_page: 5 }],
     queryFn: () => apiClient.getDatasets(1, 5),
+    retry: false,
+    enabled: !!user, // Only fetch if authenticated
   });
 
-  const { data: models } = useQuery({
+  const { data: models, error: modelsError } = useQuery({
     queryKey: ['models', { page: 1, per_page: 5 }],
     queryFn: () => apiClient.getModels(1, 5),
+    retry: false,
+    enabled: !!user, // Only fetch if authenticated
   });
 
-  const { data: healthStatus } = useQuery({
+  const { data: healthStatus, error: healthError } = useQuery({
     queryKey: ['health'],
     queryFn: () => apiClient.healthCheck(),
     refetchInterval: 30000, // Check every 30 seconds
+    retry: 1, // Health check can be retried
   });
+
+  // If no user, show login prompt
+  if (!user) {
+    return (
+      <Box textAlign="center" py={8}>
+        <Typography variant="h4" gutterBottom>
+          Welcome to DAPP - Data Analysis Platform
+        </Typography>
+        <Typography variant="body1" color="text.secondary" mb={3}>
+          Please log in to access your dashboard and start analyzing data.
+        </Typography>
+        <Button 
+          variant="contained" 
+          size="large"
+          onClick={() => router.push('/login')}
+        >
+          Go to Login
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Box>
       {/* Welcome Section */}
       <Box mb={4}>
         <Typography variant="h3" gutterBottom>
-          Welcome back, {user?.email?.split('@')[0]}! 👋
+          Welcome back, {user?.email?.split('@')[0] || 'User'}! 👋
         </Typography>
         <Typography variant="body1" color="text.secondary" mb={2}>
           Ready to analyze your data? Here's what's happening in your platform.
@@ -78,35 +104,33 @@ export default function Dashboard() {
         <Grid item xs={12} sm={6} md={3}>
           <StatsCard
             title="Datasets"
-            value={datasets?.total || 0}
+            value={String(datasets?.total || 0)}
             icon={<DatasetOutlined />}
             color="primary"
-            subtitle={`${datasets?.items?.filter(d => d.status === 'ready').length || 0} ready`}
+            subtitle={`${datasets?.items?.filter?.(d => d.status === 'ready').length || 0} ready`}
           />
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           <StatsCard
             title="Models"
-            value={models?.total || 0}
+            value={String(models?.total || 0)}
             icon={<ModelTrainingOutlined />}
             color="secondary"
-            subtitle={`${models?.items?.filter(m => m.status === 'completed').length || 0} completed`}
+            subtitle={`${models?.items?.filter?.(m => m.status === 'completed').length || 0} completed`}
           />
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           <StatsCard
             title="Avg R² Score"
-            value={
-              models?.items?.length 
-                ? (models.items
-                    .filter(m => m.metrics?.r2_score)
-                    .reduce((sum, m) => sum + m.metrics.r2_score, 0) / 
-                   models.items.filter(m => m.metrics?.r2_score).length)
-                    .toFixed(3)
-                : '0.000'
-            }
+            value={(() => {
+              if (!models?.items?.length) return '0.000';
+              const validModels = models.items.filter(m => m.metrics?.r2_score);
+              if (!validModels.length) return '0.000';
+              const average = validModels.reduce((sum, m) => sum + (m.metrics?.r2_score || 0), 0) / validModels.length;
+              return average.toFixed(3);
+            })()}
             icon={<TrendingUpOutlined />}
             color="success"
             subtitle="Model performance"
@@ -174,7 +198,7 @@ export default function Dashboard() {
                 <Box>
                   {datasets.items.slice(0, 3).map((dataset) => (
                     <Box
-                      key={dataset.id}
+                      key={dataset.id || Math.random()}
                       sx={{
                         p: 2,
                         mb: 1,
@@ -189,15 +213,15 @@ export default function Dashboard() {
                       onClick={() => router.push(`/datasets/${dataset.id}`)}
                     >
                       <Typography variant="subtitle2" gutterBottom>
-                        {dataset.filename}
+                        {dataset.filename || 'Unknown dataset'}
                       </Typography>
                       <Box display="flex" alignItems="center" justifyContent="space-between">
                         <Typography variant="caption" color="text.secondary">
-                          {new Date(dataset.created_at).toLocaleDateString()}
+                          {dataset.created_at ? new Date(dataset.created_at).toLocaleDateString() : 'Unknown date'}
                         </Typography>
                         <Chip
                           size="small"
-                          label={dataset.status}
+                          label={dataset.status || 'unknown'}
                           color={dataset.status === 'ready' ? 'success' : 'warning'}
                         />
                       </Box>

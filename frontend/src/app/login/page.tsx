@@ -22,7 +22,7 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function LoginPage() {
   const router = useRouter();
   const { login, isLoading } = useAuth();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -30,13 +30,13 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-    if (!email || !password) {
+    if (!username || !password) {
       setError('Please fill in all fields');
       return;
     }
 
     try {
-      await login(email, password);
+      await login(username, password);
       router.push('/');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Login failed');
@@ -74,12 +74,13 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              label="Username or Email"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               margin="normal"
               required
+              helperText="You can use either your username or email address"
             />
             
             <TextField
@@ -120,8 +121,9 @@ export default function LoginPage() {
               💡 Demo Credentials:
             </Typography>
             <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
-              Email: demo@dapp.com<br/>
-              Password: demo123
+              Username: demodapp<br/>
+              Email: demodapp@example.com<br/>
+              Password: test123
             </Typography>
           </Box>
         </CardContent>
