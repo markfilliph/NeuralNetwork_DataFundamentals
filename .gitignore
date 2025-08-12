@@ -88,3 +88,12 @@ logs/*.log
 # Temporary files
 *.tmp
 *.temp
+
+# Next.js
+frontend/.next/
+frontend/out/
+frontend/node_modules/
+
+# Runtime logs
+jupyter_server.log
+server.log
