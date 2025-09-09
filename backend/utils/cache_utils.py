@@ -6,7 +6,7 @@ import functools
 from typing import Any, Callable, Optional, Union, Dict
 from datetime import timedelta
 
-from backend.services.cache_service import cache_service
+from backend.services.cache_service_simple import cache_service
 
 
 def cache_query(ttl: Union[int, timedelta] = 300, key_prefix: str = "query"):

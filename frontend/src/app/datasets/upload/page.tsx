@@ -1,5 +1,5 @@
 /**
- * Dataset upload page - simplified version for debugging
+ * Dataset upload page - with proper authentication
  */
 
 'use client';
@@ -18,10 +18,36 @@ import {
 import {
   CloudUploadOutlined,
 } from '@mui/icons-material';
+import { apiClient } from '@/lib/api-client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function UploadPage() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
+  const [progress, setProgress] = useState(0);
+  const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  // If not authenticated, redirect to login
+  if (!isAuthenticated) {
+    return (
+      <Box textAlign="center" py={8}>
+        <Typography variant="h5" gutterBottom>
+          Authentication Required
+        </Typography>
+        <Typography variant="body1" color="text.secondary" mb={3}>
+          Please log in to upload datasets.
+        </Typography>
+        <Button 
+          variant="contained" 
+          onClick={() => router.push('/login')}
+        >
+          Go to Login
+        </Button>
+      </Box>
+    );
+  }
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -29,27 +55,32 @@ export default function UploadPage() {
 
     setUploading(true);
     setMessage('');
+    setProgress(0);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('http://localhost:8000/data/upload', {
-        method: 'POST',
-        body: formData,
+      console.log('Starting file upload:', file.name, 'Size:', file.size);
+      
+      // Use the apiClient which handles authentication
+      const result = await apiClient.uploadFile(file, undefined, (progress) => {
+        setProgress(progress);
+        console.log('Upload progress:', progress + '%');
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        setMessage(`Success! Dataset ID: ${result.id}`);
-      } else {
-        const error = await response.text();
-        setMessage(`Upload failed: ${error}`);
-      }
-    } catch (error) {
-      setMessage(`Upload failed: ${error}`);
+      console.log('Upload successful:', result);
+      setMessage(`Success! Dataset uploaded: ${result.filename || result.name} (ID: ${result.dataset_id || result.id})`);
+      
+      // Redirect to datasets page after successful upload
+      setTimeout(() => {
+        router.push('/datasets');
+      }, 2000);
+      
+    } catch (error: any) {
+      console.error('Upload failed:', error);
+      const errorMessage = error.response?.data?.detail || error.message || String(error);
+      setMessage(`Upload failed: ${errorMessage}`);
     } finally {
       setUploading(false);
+      setProgress(0);
     }
   };
 
@@ -82,9 +113,9 @@ export default function UploadPage() {
           
           {uploading && (
             <Box sx={{ mb: 2 }}>
-              <LinearProgress />
+              <LinearProgress variant="determinate" value={progress} />
               <Typography variant="body2" sx={{ mt: 1 }}>
-                Uploading...
+                Uploading... {progress}%
               </Typography>
             </Box>
           )}

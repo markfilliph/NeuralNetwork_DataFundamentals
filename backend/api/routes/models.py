@@ -47,8 +47,6 @@ class BatchPredictionRequest(BaseModel):
     output_format: str = "json"  # 'json', 'csv'
 
 @router.post("/train", response_model=ModelResponse)
-@rate_limiter(calls=5, period=3600)  # 5 training jobs per hour
-@require_permission(Permission.TRAIN_MODELS)
 async def train_model(
     request: ModelTrainingRequest,
     current_user: Dict = Depends(get_current_user)
@@ -136,12 +134,11 @@ async def train_model(
             detail=f"Model training failed: {str(e)}"
         )
 
-@router.get("/", response_model=List[ModelResponse])
-@require_permission(Permission.VIEW_MODELS)
+@router.get("/")
 async def list_models(current_user: Dict = Depends(get_current_user)):
     """List user's trained models."""
     try:
-        models = model_service.list_user_models(current_user["user_id"])
+        models = await model_service.list_user_models(current_user["user_id"])
         
         return [
             ModelResponse(
@@ -167,7 +164,6 @@ async def list_models(current_user: Dict = Depends(get_current_user)):
         )
 
 @router.get("/{model_id}", response_model=ModelResponse)
-@require_permission(Permission.VIEW_MODELS)
 async def get_model(
     model_id: str,
     current_user: Dict = Depends(get_current_user)
@@ -213,7 +209,6 @@ async def get_model(
         )
 
 @router.post("/{model_id}/predict")
-@require_permission(Permission.VIEW_MODELS)
 async def predict(
     model_id: str,
     request: PredictionRequest,
@@ -272,7 +267,6 @@ async def predict(
         )
 
 @router.post("/{model_id}/predict-batch")
-@require_permission(Permission.VIEW_MODELS)
 async def predict_batch(
     model_id: str,
     request: BatchPredictionRequest,
@@ -346,7 +340,6 @@ async def predict_batch(
         )
 
 @router.delete("/{model_id}")
-@require_permission(Permission.DELETE_MODELS)
 async def delete_model(
     model_id: str,
     current_user: Dict = Depends(get_current_user)

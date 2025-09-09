@@ -32,6 +32,11 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
   useEffect(() => {
     if (user && token) {
+      // Temporarily disable WebSocket connections - backend doesn't have Socket.IO implemented yet
+      console.log('WebSocket connections disabled - backend Socket.IO not implemented');
+      setConnectionStatus('disconnected');
+      return;
+      
       // Create WebSocket connection
       const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000';
       const newSocket = io(wsUrl, {

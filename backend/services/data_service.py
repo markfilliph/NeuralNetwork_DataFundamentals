@@ -16,7 +16,7 @@ from backend.core.config import settings
 from backend.core.logging import audit_logger, EventType
 from backend.core.exceptions import SecurityError, ValidationError
 from backend.services.encryption_service import encryption_service
-from backend.services.cache_service import cache_service
+from backend.services.cache_service_simple import cache_service
 from backend.utils.sanitizers import DataSanitizer
 from backend.utils.validators import DataValidator
 from backend.models.database import db_manager
@@ -130,7 +130,7 @@ class DataProcessingService:
                 )
                 load_path = decrypted_path
                 # Use original file extension from metadata
-                original_extension = dataset_info.metadata.get('file_type', '.csv')
+                original_extension = dataset_info.metadata.get('file_extension', '.csv')
             else:
                 load_path = file_path
                 original_extension = file_path.suffix
@@ -219,7 +219,15 @@ class DataProcessingService:
         extension = extension.lower()
         
         if extension in ['.xlsx', '.xls']:
-            return pd.read_excel(file_path)
+            try:
+                # Try to read Excel file with error handling
+                return pd.read_excel(file_path, engine='openpyxl' if extension == '.xlsx' else 'xlrd')
+            except Exception as e:
+                # Fallback: try reading as CSV if Excel parsing fails
+                try:
+                    return pd.read_csv(file_path)
+                except Exception:
+                    raise ValueError(f"Could not parse Excel file: {str(e)}")
         elif extension == '.csv':
             # Try different encodings
             for encoding in ['utf-8', 'latin-1', 'cp1252']:
@@ -277,9 +285,9 @@ class DataProcessingService:
         data_types = {col: str(dtype) for col, dtype in df.dtypes.items()}
         
         # Missing values analysis
-        missing_values = df.isnull().sum().to_dict()
+        missing_values = {col: int(missing) for col, missing in df.isnull().sum().to_dict().items()}
         missing_percentages = {
-            col: round((missing / len(df)) * 100, 2) 
+            col: float(round((missing / len(df)) * 100, 2)) 
             for col, missing in missing_values.items()
         }
         
@@ -291,16 +299,16 @@ class DataProcessingService:
             series = df[col].dropna()
             if len(series) > 0:
                 numeric_summary[col] = {
-                    'count': len(series),
-                    'mean': round(series.mean(), 4),
-                    'std': round(series.std(), 4),
-                    'min': round(series.min(), 4),
-                    'q25': round(series.quantile(0.25), 4),
-                    'median': round(series.median(), 4),
-                    'q75': round(series.quantile(0.75), 4),
-                    'max': round(series.max(), 4),
-                    'skewness': round(stats.skew(series), 4),
-                    'kurtosis': round(stats.kurtosis(series), 4)
+                    'count': int(len(series)),
+                    'mean': float(round(series.mean(), 4)),
+                    'std': float(round(series.std(), 4)),
+                    'min': float(round(series.min(), 4)),
+                    'q25': float(round(series.quantile(0.25), 4)),
+                    'median': float(round(series.median(), 4)),
+                    'q75': float(round(series.quantile(0.75), 4)),
+                    'max': float(round(series.max(), 4)),
+                    'skewness': float(round(stats.skew(series), 4)),
+                    'kurtosis': float(round(stats.kurtosis(series), 4))
                 }
         
         # Categorical columns analysis
@@ -312,11 +320,11 @@ class DataProcessingService:
             if len(series) > 0:
                 value_counts = series.value_counts()
                 categorical_summary[col] = {
-                    'count': len(series),
-                    'unique': series.nunique(),
+                    'count': int(len(series)),
+                    'unique': int(series.nunique()),
                     'top_value': value_counts.index[0] if len(value_counts) > 0 else None,
                     'top_frequency': int(value_counts.iloc[0]) if len(value_counts) > 0 else 0,
-                    'value_counts': value_counts.head(10).to_dict()  # Top 10 values
+                    'value_counts': {str(k): int(v) for k, v in value_counts.head(10).to_dict().items()}  # Top 10 values with converted types
                 }
         
         # Correlation matrix (for numeric columns only)
@@ -326,7 +334,7 @@ class DataProcessingService:
             correlation_cols = numeric_cols[:self.MAX_CORRELATION_COLUMNS]
             corr_df = df[correlation_cols].corr()
             correlation_matrix = {
-                col: corr_df[col].to_dict() 
+                col: {k: float(v) if not pd.isna(v) else None for k, v in corr_df[col].to_dict().items()}
                 for col in corr_df.columns
             }
         
@@ -347,16 +355,16 @@ class DataProcessingService:
                     
                     if outlier_values:
                         outliers[col] = {
-                            'count': len(outlier_values),
-                            'percentage': round((len(outlier_values) / len(series)) * 100, 2),
-                            'values': outlier_values[:20]  # Limit to first 20 outliers
+                            'count': int(len(outlier_values)),
+                            'percentage': float(round((len(outlier_values) / len(series)) * 100, 2)),
+                            'values': [float(v) for v in outlier_values[:20]]  # Limit to first 20 outliers
                         }
         
         # Duplicate rows
         duplicates = df.duplicated().sum()
         
         # Memory usage
-        memory_usage = round(df.memory_usage(deep=True).sum() / 1024 / 1024, 2)  # MB
+        memory_usage = float(round(df.memory_usage(deep=True).sum() / 1024 / 1024, 2))  # MB
         
         # Create analysis object
         analysis = DataAnalysis(
@@ -614,6 +622,192 @@ class DataProcessingService:
         )
         
         return affected > 0
+    
+    def list_user_datasets(self, user_id: str) -> List[Dict[str, Any]]:
+        """List all datasets owned by a user.
+        
+        Args:
+            user_id: User ID to list datasets for
+            
+        Returns:
+            List of dataset dictionaries
+        """
+        query = "SELECT * FROM datasets WHERE owner_id = ? ORDER BY created_at DESC"
+        results = db_manager.execute_query(query, (user_id,))
+        
+        datasets = []
+        for row in results:
+            dataset = {
+                "dataset_id": row['dataset_id'],
+                "name": row['name'],
+                "file_size": row['file_size'],
+                "owner_id": row['owner_id'],
+                "is_encrypted": bool(row['is_encrypted']),
+                "created_at": row['created_at'],
+                "updated_at": row['updated_at'],
+                "metadata": json.loads(row['metadata'] or '{}')
+            }
+            datasets.append(dataset)
+        
+        return datasets
+    
+    def get_dataset_info(self, dataset_id: str) -> Optional[DatasetInfo]:
+        """Get dataset information (public method).
+        
+        Args:
+            dataset_id: Dataset identifier
+            
+        Returns:
+            DatasetInfo object or None if not found
+        """
+        return self._get_dataset_info(dataset_id)
+    
+    def delete_dataset(self, dataset_id: str) -> bool:
+        """Delete a dataset and its file.
+        
+        Args:
+            dataset_id: Dataset identifier
+            
+        Returns:
+            True if deleted successfully
+        """
+        # Get dataset info first
+        dataset_info = self._get_dataset_info(dataset_id)
+        if not dataset_info:
+            return False
+        
+        try:
+            # Delete file if it exists
+            file_path = Path(dataset_info.file_path)
+            if file_path.exists():
+                file_path.unlink()
+            
+            # Delete from database
+            query = "DELETE FROM datasets WHERE dataset_id = ?"
+            affected = db_manager.execute_update(query, (dataset_id,))
+            
+            return affected > 0
+            
+        except Exception as e:
+            logger.error(f"Failed to delete dataset {dataset_id}: {e}")
+            return False
+    
+    def get_dataset_sample(self, dataset_id: str, n_rows: int = 100, random: bool = False) -> Dict[str, Any]:
+        """Get a sample of the dataset (synchronous version).
+        
+        Args:
+            dataset_id: Dataset identifier
+            n_rows: Number of rows to return
+            random: Whether to sample randomly
+            
+        Returns:
+            Dictionary with sample data and metadata
+        """
+        # This is a synchronous wrapper for compatibility
+        # In a real async environment, this would need proper async handling
+        import asyncio
+        
+        # Get current event loop or create new one
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        
+        # For now, just get the dataset info - full implementation would need async refactoring
+        dataset_info = self._get_dataset_info(dataset_id)
+        if not dataset_info:
+            raise ValueError(f"Dataset {dataset_id} not found")
+        
+        return {
+            "message": "Dataset sample not implemented yet",
+            "dataset_id": dataset_id,
+            "dataset_info": {
+                "name": dataset_info.name,
+                "shape": "Unknown",
+                "columns": []
+            }
+        }
+    
+    def store_dataset(self, file_path: str, dataset_id: str, owner_id: str, 
+                     original_filename: str, encrypt: bool = True) -> DatasetInfo:
+        """Store an uploaded dataset file and save its information.
+        
+        Args:
+            file_path: Path to the uploaded file
+            dataset_id: Unique dataset identifier
+            owner_id: User ID of the file owner
+            original_filename: Original filename
+            encrypt: Whether to encrypt the stored file
+            
+        Returns:
+            DatasetInfo object with storage details
+        """
+        import shutil
+        import os
+        
+        source_path = Path(file_path)
+        file_size = source_path.stat().st_size
+        
+        # Create processed directory if it doesn't exist
+        processed_dir = Path(settings.PROCESSED_PATH)
+        processed_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Determine destination path
+        file_extension = Path(original_filename).suffix.lower()
+        destination_filename = f"{dataset_id}{file_extension}"
+        
+        if encrypt:
+            destination_filename += ".encrypted"
+            destination_path = processed_dir / destination_filename
+            
+            # Encrypt and store the file
+            with open(source_path, 'rb') as src:
+                encrypted_content = encryption_service.encrypt_data(src.read())
+            
+            with open(destination_path, 'wb') as dst:
+                dst.write(encrypted_content)
+        else:
+            destination_path = processed_dir / destination_filename
+            shutil.copy2(source_path, destination_path)
+        
+        # Calculate metadata
+        metadata = {
+            "original_filename": original_filename,
+            "file_extension": file_extension,
+            "upload_date": datetime.utcnow().isoformat()
+        }
+        
+        # Save dataset info to database
+        success = self._save_dataset_info(
+            dataset_id=dataset_id,
+            name=original_filename,
+            file_path=str(destination_path),
+            file_size=file_size,
+            owner_id=owner_id,
+            is_encrypted=encrypt,
+            metadata=metadata
+        )
+        
+        if not success:
+            # Clean up file if database save failed
+            if destination_path.exists():
+                destination_path.unlink()
+            raise Exception("Failed to save dataset information to database")
+        
+        # Return dataset info
+        return DatasetInfo(
+            dataset_id=dataset_id,
+            name=original_filename,
+            file_path=str(destination_path),
+            file_size=file_size,
+            file_hash="",  # Will be calculated in _save_dataset_info
+            owner_id=owner_id,
+            is_encrypted=encrypt,
+            created_at=datetime.utcnow().isoformat(),
+            updated_at=datetime.utcnow().isoformat(),
+            metadata=metadata
+        )
 
 
 # Global data service instance

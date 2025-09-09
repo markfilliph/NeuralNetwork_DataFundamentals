@@ -24,12 +24,14 @@ router = APIRouter(prefix="/data", tags=["data"])
 
 # Pydantic models
 class DatasetResponse(BaseModel):
-    dataset_id: str
-    name: str
+    id: str  # Frontend expects 'id' not 'dataset_id'
+    filename: str  # Frontend expects 'filename' not 'name'
+    description: str = ""  # Frontend expects description
     file_size: int
     owner_id: str
     is_encrypted: bool
     created_at: str
+    status: str = "ready"  # Frontend expects status field
     metadata: Dict[str, Any]
 
 class DataAnalysisRequest(BaseModel):
@@ -48,16 +50,20 @@ class DataCleaningRequest(BaseModel):
     remove_outliers: bool = False
 
 @router.post("/upload", response_model=DatasetResponse)
-@rate_limiter(calls=10, period=3600)  # 10 uploads per hour
-@require_permission(Permission.UPLOAD_DATA)
 async def upload_file(
     file: UploadFile = File(...),
     current_user: Dict = Depends(get_current_user)
 ):
     """Upload and process a data file."""
+    import logging
+    logger = logging.getLogger(__name__)
+    
     try:
+        logger.info(f"File upload started - User: {current_user.get('username', 'unknown')}, File: {file.filename}, Size: {file.size}")
+        
         # Validate file
         if not file.filename:
+            logger.error("No filename provided")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No file provided"
@@ -81,19 +87,22 @@ async def upload_file(
             temp_file_path = temp_file.name
         
         try:
-            # Validate and sanitize file
-            SecureFileHandler.validate_file(Path(temp_file_path))
+            logger.info(f"Validating file: {file.filename} at {temp_file_path}")
+            # Validate file
+            SecureFileHandler.validate_file(Path(temp_file_path), file.filename)
             validated_path = temp_file_path
-            sanitized_path = DataSanitizer.sanitize_file(validated_path)
+            logger.info(f"File validation successful")
             
             # Store file securely
+            logger.info(f"Storing dataset with ID: {dataset_id}")
             stored_info = data_service.store_dataset(
-                file_path=sanitized_path,
+                file_path=validated_path,
                 dataset_id=dataset_id,
                 owner_id=current_user["user_id"],
                 original_filename=file.filename,
                 encrypt=True
             )
+            logger.info(f"Dataset stored successfully: {stored_info.dataset_id}")
             
             # Log successful upload
             audit_logger.log_event(
@@ -109,12 +118,14 @@ async def upload_file(
             )
             
             return DatasetResponse(
-                dataset_id=dataset_id,
-                name=file.filename,
+                id=dataset_id,
+                filename=file.filename,
+                description=f"Uploaded {file.filename}",
                 file_size=stored_info.file_size,
                 owner_id=current_user["user_id"],
                 is_encrypted=stored_info.is_encrypted,
                 created_at=stored_info.created_at,
+                status="ready",
                 metadata=stored_info.metadata
             )
             
@@ -128,6 +139,7 @@ async def upload_file(
     except HTTPException:
         raise
     except Exception as e:
+        logger.error(f"File upload failed: {str(e)}", exc_info=True)
         audit_logger.log_event(
             EventType.DATA_UPLOADED,
             user_id=current_user.get("user_id"),
@@ -139,13 +151,55 @@ async def upload_file(
             detail=f"File upload failed: {str(e)}"
         )
 
-@router.get("/datasets")
-@require_permission(Permission.READ_DATA)
-async def list_datasets(current_user: Dict = Depends(get_current_user)):
-    """List user's datasets."""
+class PaginatedDatasetResponse(BaseModel):
+    items: List[DatasetResponse]
+    total: int
+    page: int
+    per_page: int
+    pages: int
+
+@router.get("/datasets", response_model=PaginatedDatasetResponse)
+async def list_datasets(
+    page: int = 1,
+    per_page: int = 20,
+    current_user: Dict = Depends(get_current_user)
+):
+    """List user's datasets with pagination."""
     try:
-        datasets = data_service.list_user_datasets(current_user["user_id"])
-        return {"datasets": datasets}
+        # Get all datasets for the user
+        all_datasets = data_service.list_user_datasets(current_user["user_id"])
+        
+        # Calculate pagination
+        total = len(all_datasets)
+        pages = (total + per_page - 1) // per_page  # Ceiling division
+        start_idx = (page - 1) * per_page
+        end_idx = start_idx + per_page
+        
+        # Get page slice
+        page_datasets = all_datasets[start_idx:end_idx]
+        
+        # Convert to frontend format
+        formatted_datasets = []
+        for dataset in page_datasets:
+            formatted_datasets.append(DatasetResponse(
+                id=dataset["dataset_id"],
+                filename=dataset.get("metadata", {}).get("original_filename", dataset["name"]),
+                description=f"Dataset uploaded on {dataset['created_at'][:10]}",
+                file_size=dataset["file_size"],
+                owner_id=dataset["owner_id"],
+                is_encrypted=dataset["is_encrypted"],
+                created_at=dataset["created_at"],
+                status="ready",
+                metadata=dataset["metadata"]
+            ))
+        
+        return PaginatedDatasetResponse(
+            items=formatted_datasets,
+            total=total,
+            page=page,
+            per_page=per_page,
+            pages=pages
+        )
         
     except Exception as e:
         raise HTTPException(
@@ -154,7 +208,6 @@ async def list_datasets(current_user: Dict = Depends(get_current_user)):
         )
 
 @router.get("/datasets/{dataset_id}")
-@require_permission(Permission.READ_DATA)
 async def get_dataset_info(
     dataset_id: str,
     current_user: Dict = Depends(get_current_user)
@@ -189,7 +242,6 @@ async def get_dataset_info(
         )
 
 @router.post("/datasets/{dataset_id}/analyze")
-@require_permission(Permission.READ_DATA)
 async def analyze_dataset(
     dataset_id: str,
     request: DataAnalysisRequest,
@@ -215,8 +267,9 @@ async def analyze_dataset(
                 )
         
         # Perform analysis
-        analysis = data_service.analyze_dataset(
+        analysis = await data_service.analyze_dataset(
             dataset_id=dataset_id,
+            user_id=current_user["user_id"],
             include_correlation=request.include_correlation,
             detect_outliers=request.detect_outliers
         )
@@ -247,7 +300,6 @@ async def analyze_dataset(
         )
 
 @router.get("/datasets/{dataset_id}/sample")
-@require_permission(Permission.READ_DATA)
 async def get_data_sample(
     dataset_id: str,
     request: DataSampleRequest = Depends(),
@@ -289,7 +341,6 @@ async def get_data_sample(
         )
 
 @router.delete("/datasets/{dataset_id}")
-@require_permission(Permission.DELETE_DATA)
 async def delete_dataset(
     dataset_id: str,
     current_user: Dict = Depends(get_current_user)

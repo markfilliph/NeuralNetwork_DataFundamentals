@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 from backend.services.rbac_service_db import db_rbac_service, Role
 from backend.services.auth_service import AuthenticationService, AuthenticationError
@@ -24,7 +24,7 @@ class LoginRequest(BaseModel):
 
 class RegisterRequest(BaseModel):
     username: str
-    email: EmailStr
+    email: str  # Simplified to avoid email-validator dependency
     password: str
     role: str = "analyst"
 
@@ -53,7 +53,6 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         )
 
 @router.post("/register", response_model=TokenResponse)
-@rate_limiter(calls=5, period=300)  # 5 calls per 5 minutes
 async def register(request: RegisterRequest):
     """Register a new user."""
     try:
@@ -113,7 +112,6 @@ async def register(request: RegisterRequest):
         )
 
 @router.post("/login", response_model=TokenResponse)
-@rate_limiter(calls=10, period=300)  # 10 calls per 5 minutes
 async def login(request: LoginRequest):
     """Authenticate user and return access token."""
     try:

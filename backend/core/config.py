@@ -15,7 +15,7 @@ class Settings:
         
         # File handling
         self.MAX_FILE_SIZE: int = 100 * 1024 * 1024  # 100MB
-        self.ALLOWED_EXTENSIONS: List[str] = ['.xlsx', '.xls', '.csv', '.mdb', '.accdb', '.txt', '.tsv']
+        self.ALLOWED_EXTENSIONS: List[str] = ['.xlsx', '.xls', '.csv', '.mdb', '.accdb', '.tsv']
         self.ALLOWED_MIMETYPES: List[str] = [
             'application/vnd.ms-excel',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

@@ -22,11 +22,12 @@ class SecureFileHandler:
     ALLOWED_MIMETYPES = set(settings.ALLOWED_MIMETYPES)
     
     @staticmethod
-    def validate_file(file_path: Path) -> bool:
+    def validate_file(file_path: Path, original_filename: Optional[str] = None) -> bool:
         """Validate file security and integrity.
         
         Args:
             file_path: Path to the file to validate
+            original_filename: Original filename with extension (for temp files)
             
         Returns:
             True if file passes all validation checks
@@ -44,7 +45,13 @@ class SecureFileHandler:
             )
         
         # Extension validation
-        ext = file_path.suffix.lower()
+        if original_filename:
+            # Use original filename for extension validation (for temp files)
+            ext = Path(original_filename).suffix.lower()
+        else:
+            # Use file path extension
+            ext = file_path.suffix.lower()
+            
         if ext not in SecureFileHandler.ALLOWED_EXTENSIONS:
             raise InvalidFileTypeError(f"Invalid file extension: {ext}")
         
@@ -56,8 +63,8 @@ class SecureFileHandler:
                 # Basic file signature detection
                 if ext == '.xlsx' and not (b'PK' in header):
                     raise InvalidFileTypeError("File does not appear to be a valid Excel file")
-                elif ext in ['.csv', '.txt', '.tsv']:
-                    # For text files, check if it's readable text
+                elif ext in ['.csv', '.tsv']:
+                    # For CSV/TSV files, check if it's readable text
                     f.seek(0)
                     try:
                         f.read(100).decode('utf-8')
