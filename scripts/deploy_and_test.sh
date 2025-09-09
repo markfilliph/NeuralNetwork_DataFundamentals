@@ -7,9 +7,10 @@ set -e  # Exit on any error
 echo "🚀 DAPP Complete Deployment and Testing"
 echo "========================================"
 
-# Check if we're in the right directory
-if [ ! -f "main.py" ]; then
+# Check if we're in the right directory (adjust for new structure)
+if [ ! -f "main.py" ] || [ ! -d "backend" ]; then
     echo "❌ Error: Must run from project root directory"
+    echo "Expected to find main.py and backend/ directory"
     exit 1
 fi
 
@@ -27,7 +28,7 @@ echo "-----------------------------------"
 # Check virtual environment
 if [ ! -d "venv" ]; then
     echo "❌ Virtual environment not found. Please create it first:"
-    echo "python -m venv venv"
+    echo "python3 -m venv venv"
     exit 1
 fi
 
@@ -54,7 +55,7 @@ echo "🖥️  Step 2: Start Backend Server"
 echo "--------------------------------"
 
 # Start backend server in background
-python main.py &
+python3 main.py &
 BACKEND_PID=$!
 echo "✅ Backend server started (PID: $BACKEND_PID)"
 
@@ -182,7 +183,6 @@ echo ""
 echo "📡 Backend API: http://localhost:8000"
 echo "📚 API Documentation: http://localhost:8000/docs"
 echo "🌐 Frontend Dashboard: http://localhost:3000"
-echo "📄 Simple HTML Dashboard: file://$(pwd)/frontend/simple-dashboard.html"
 echo ""
 echo "🧪 All tests passed:"
 echo "  ✅ User registration/login"

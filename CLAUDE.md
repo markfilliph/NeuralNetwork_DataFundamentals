@@ -18,29 +18,31 @@ The project is designed around documentation-driven development with a planned m
 
 ### Directory Structure (Current)
 ```
-backend/
+backend/           # Python FastAPI backend
 ├── api/           # FastAPI routes and middleware
-│   ├── routes/    # Modular route files (auth, data, models)
-│   ├── main.py    # Main FastAPI app with middleware
-│   └── middleware.py # Custom middleware
 ├── core/          # Configuration, exceptions, logging
 ├── models/        # Database models and repositories
 ├── services/      # Business logic (data, model, export services)
 ├── utils/         # Validators, transformers, file handlers
 └── tests/         # Comprehensive test suite
 
-notebooks/
-├── templates/     # Reusable notebook templates
-├── examples/      # Tutorial notebooks
-└── user_notebooks/# User-created analysis notebooks
+frontend/          # Next.js React frontend
+├── src/app/       # Next.js app router pages
+├── src/components/# React components
+├── src/contexts/  # React contexts
+└── src/types/     # TypeScript definitions
 
-data/
+data/              # Data storage
 ├── uploads/       # Temporary file uploads
 ├── processed/     # Encrypted processed datasets
 └── app.db         # SQLite database
 
+scripts/           # Deployment and utility scripts
+tests/             # Integration tests
+docs/              # Project documentation
 logs/              # Application and audit logs
-archive/           # Backup files from refactoring
+notebooks/         # Jupyter notebooks
+sample_datasets/   # Example datasets
 ```
 
 ## Technology Stack
